@@ -1,0 +1,25 @@
+{
+  "nome_provvisorio": "Servizio Clienti",
+  "utente_target": "Titolare di un'impresa di pulizie che non può rispondere alle chiamate",
+  "problema_utente": "Perde clienti perché risponde tardi alle chiamate e non fornisce informazioni precise",
+  "input": "Richiesta del cliente",
+  "output": "Preventivo in base alle richieste",
+  "vincoli": {
+    "invio_automatico": false,
+    "revisione_umana_obbligatoria": true
+  },
+  "criteri_accettazione": [
+    "Distinguere pulizie condominiali da pulizie di appartamenti",
+    "Identificare se rientra nella zona di lavoro",
+    "Gestire dall'IA dati mancanti",
+    "Mostrare preventivo come bozza da revisionare"
+  ],
+  "rischi": [
+    "Input poco chiari",
+    "Errore di prezzi"
+  ],
+  "primo_passo_demo": "Fare una prova con una richiesta di un cliente per vedere se genera un preventivo adeguato",
+  "fuori_perimetro_per_ora": [
+    "Integrazione di pagamenti online"
+  ]
+}
