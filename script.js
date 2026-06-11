@@ -46,10 +46,10 @@ const FALLBACK_PREVENTIVO_CONFIG = {
   },
   goal: "Aiutare i potenziali clienti a ottenere un preventivo di massima raccogliendo le informazioni corrette e guidandoli nel processo.",
   services_offered: [
-    "Pulizia condomini",
-    "Pulizia appartamenti",
-    "Pulizia uffici",
-    "Sanificazione",
+    "Pulizie condomini",
+    "Pulizie appartamenti",
+    "Pulizie uffici",
+    "Sanificazione ambienti",
     "Disinfestazione",
     "Giardinaggio"
   ],
@@ -63,66 +63,80 @@ const FALLBACK_PREVENTIVO_CONFIG = {
     pulizia_condomini: {
       required_questions: [
         "Quanti piani ha il condominio?",
-        "Sono presenti vetri da pulire?",
-        "Com'\u00e8 l'ingresso? Piccolo, medio o grande?",
+        "Quante scale ci sono?",
+        "\u00c8 presente ascensore?",
+        "\u00c8 presente androne?",
         "\u00c8 presente un cortile?",
-        "Sono presenti cantinole?",
-        "Quanti interventi extra al mese servono?",
-        "Quante spolverature mensili servono?",
+        "\u00c8 presente un garage?",
+        "Sono presenti vetri da pulire?",
         "Quanti giorni a settimana \u00e8 richiesto il servizio?"
       ],
       essential_fields: [
         "numero_piani",
-        "presenza_vetri",
-        "caratteristiche_ingresso",
+        "numero_scale",
+        "presenza_ascensore",
+        "presenza_androne",
         "presenza_cortile",
-        "presenza_cantinole",
-        "interventi_extra_mensili",
-        "spolverature_mensili",
+        "presenza_garage",
+        "presenza_vetri",
         "giorni_settimana"
       ]
     },
     pulizia_appartamenti: {
       required_questions: [
-        "Quanti bagni ci sono?",
         "Quanti metri quadri \u00e8 l'appartamento?",
+        "Quante stanze ci sono?",
+        "Quanti bagni ci sono?",
+        "Serve una pulizia ordinaria o profonda?",
         "Il livello di sporcizia \u00e8 basso, medio o alto?"
       ],
-      essential_fields: ["numero_bagni", "metri_quadri", "livello_sporcizia"]
+      essential_fields: ["metri_quadri", "numero_stanze", "numero_bagni", "tipo_pulizia", "livello_sporcizia"]
     },
     pulizia_uffici: {
       required_questions: [
         "Quanti metri quadri \u00e8 l'ufficio?",
         "Quanti bagni ci sono?",
         "Quante stanze o postazioni ci sono?",
-        "Quanti giorni a settimana \u00e8 richiesto il servizio?"
+        "Quanti giorni a settimana \u00e8 richiesto il servizio?",
+        "Ci sono orari preferiti?"
       ],
-      essential_fields: ["metri_quadri", "numero_bagni", "numero_stanze_o_postazioni", "giorni_settimana"]
+      essential_fields: ["metri_quadri", "numero_bagni", "numero_stanze_o_postazioni", "giorni_settimana", "orari_preferiti"]
     },
     sanificazione: {
-      required_questions: ["Quanti metri quadri totali bisogna sanificare?"],
-      essential_fields: ["metri_quadri_totali"]
+      required_questions: [
+        "Quanti metri quadri totali bisogna sanificare?",
+        "Che tipo di ambiente bisogna sanificare?",
+        "Che livello di intervento serve?",
+        "Quanto \u00e8 urgente?"
+      ],
+      essential_fields: ["metri_quadri_totali", "tipo_ambiente", "livello_intervento", "urgenza"]
     },
     disinfestazione: {
       required_questions: [
-        "Quanti metri quadri totali bisogna trattare?",
-        "Che tipo di problema ha riscontrato? Insetti, blatte, formiche, zanzare o altro?"
+        "Che tipo di infestante ha riscontrato?",
+        "Quale zona \u00e8 interessata?",
+        "Il problema \u00e8 interno o esterno?",
+        "Quanto \u00e8 grave il problema?"
       ],
-      essential_fields: ["metri_quadri_totali", "tipo_problema"]
+      essential_fields: ["tipo_infestante", "zona_interessata", "interno_esterno", "gravita_problema"]
     },
     giardinaggio: {
       required_questions: [
-        "Che tipo di lavorazione serve? Taglio erba, potatura, pulizia giardino, manutenzione o altro?",
-        "Quanto \u00e8 grande circa l'area verde?"
+        "Quanto \u00e8 grande circa l'area verde?",
+        "Che tipo di intervento serve?",
+        "Sono presenti siepi?",
+        "Sono presenti prato o aiuole?",
+        "Serve potatura?",
+        "Con quale frequenza serve il servizio?"
       ],
-      essential_fields: ["tipo_lavorazione", "dimensione_area"]
+      essential_fields: ["metratura_area_verde", "tipo_intervento_giardino", "presenza_siepi", "presenza_prato", "potatura", "frequenza_giardino"]
     }
   },
   critical_constraints: {
     never_give_final_price: true,
     always_use_disclaimer: "Questa \u00e8 una stima indicativa basata sui dati forniti, il preventivo finale sar\u00e0 confermato dopo sopralluogo tecnico.",
     ask_missing_essential_data_before_estimate: true,
-    automatic_sending: false,
+    automatic_sending: true,
     human_review_required: true
   },
   estimate_output_format: {
@@ -134,16 +148,16 @@ const FALLBACK_PREVENTIVO_CONFIG = {
       notes: "eventuali elementi che possono modificare il prezzo"
     },
     mandatory_disclaimer: "Questa \u00e8 una stima indicativa basata sui dati forniti, il preventivo finale sar\u00e0 confermato dopo sopralluogo tecnico.",
-    status: "da_revisionare"
+    status: "Nuova"
   },
-  first_message_to_user: "Buongiorno, certo. Per aiutarla al meglio con un preventivo di massima, mi dica prima quale servizio le interessa tra: pulizia condomini, appartamenti, uffici, sanificazione, disinfestazione o giardinaggio."
+  first_message_to_user: "Buongiorno, certo. Per aiutarla al meglio con un preventivo di massima, mi dica prima quale servizio le interessa tra: pulizie condomini, pulizie appartamenti, pulizie uffici, sanificazione ambienti, disinfestazione o giardinaggio."
 };
 
 const SERVICE_LABELS = {
-  pulizia_condomini: "Pulizia condomini",
-  pulizia_appartamenti: "Pulizia appartamenti",
-  pulizia_uffici: "Pulizia uffici",
-  sanificazione: "Sanificazione",
+  pulizia_condomini: "Pulizie condomini",
+  pulizia_appartamenti: "Pulizie appartamenti",
+  pulizia_uffici: "Pulizie uffici",
+  sanificazione: "Sanificazione ambienti",
   disinfestazione: "Disinfestazione",
   giardinaggio: "Giardinaggio"
 };
@@ -152,24 +166,27 @@ const SERVICE_RULES = {
   pulizia_condomini: {
     calculate(data) {
       const piani = numberValue(data.numero_piani);
+      const scale = numberValue(data.numero_scale);
       const giorni = numberValue(data.giorni_settimana);
-      const extra = numberValue(data.interventi_extra_mensili);
-      const spolverature = numberValue(data.spolverature_mensili);
-      const ingresso = { piccolo: 20, medio: 45, grande: 75 }[data.caratteristiche_ingresso] || 0;
       const optional =
+        yesNoCost(data.presenza_ascensore, 35) +
+        yesNoCost(data.presenza_androne, 25) +
+        yesNoCost(data.presenza_garage, 45) +
         yesNoCost(data.presenza_vetri, 35) +
-        yesNoCost(data.presenza_cortile, 45) +
-        yesNoCost(data.presenza_cantinole, 35);
-      const base = 95 + piani * 28 + giorni * 65 + extra * 30 + spolverature * 16 + ingresso + optional;
+        yesNoCost(data.presenza_cortile, 45);
+      const base = 95 + piani * 28 + Math.max(scale, 1) * 45 + giorni * 65 + optional;
       return rangeFromBase(base, 0.18, "mensile indicativa");
     }
   },
   pulizia_appartamenti: {
     calculate(data) {
       const mq = numberValue(data.metri_quadri);
+      const stanze = numberValue(data.numero_stanze);
       const bagni = numberValue(data.numero_bagni);
-      const multiplier = { basso: 1, medio: 1.25, alto: 1.55 }[data.livello_sporcizia] || 1;
-      const base = (45 + mq * 1.35 + bagni * 18) * multiplier;
+      const dirtMultiplier = { basso: 1, medio: 1.25, alto: 1.55 }[data.livello_sporcizia] || 1;
+      const typeMultiplier = { ordinaria: 1, profonda: 1.35 }[data.tipo_pulizia] || 1;
+      const balconies = yesNoCost(data.presenza_balconi, 25);
+      const base = (45 + mq * 1.35 + stanze * 8 + bagni * 18 + balconies) * dirtMultiplier * typeMultiplier;
       return rangeFromBase(base, 0.2, "indicativa per intervento");
     }
   },
@@ -179,52 +196,62 @@ const SERVICE_RULES = {
       const bagni = numberValue(data.numero_bagni);
       const postazioni = numberValue(data.numero_stanze_o_postazioni);
       const giorni = numberValue(data.giorni_settimana);
-      const base = 90 + mq * 0.85 + bagni * 20 + postazioni * 5 + giorni * 58;
+      const orarioExtra = String(data.orari_preferiti || "").toLowerCase().includes("sera") ? 45 : 0;
+      const base = 90 + mq * 0.85 + bagni * 20 + postazioni * 5 + giorni * 58 + orarioExtra;
       return rangeFromBase(base, 0.18, "mensile indicativa");
     }
   },
   sanificazione: {
     calculate(data) {
       const mq = numberValue(data.metri_quadri_totali);
-      const base = Math.max(80, 45 + mq * 1.45);
+      const level = { ordinario: 1, approfondito: 1.3, urgente: 1.45 }[data.livello_intervento] || 1;
+      const urgency = { bassa: 0, media: 25, alta: 45 }[data.urgenza] || 0;
+      const base = Math.max(80, (45 + mq * 1.45) * level + urgency);
       return rangeFromBase(base, 0.18, "indicativa per intervento");
     }
   },
   disinfestazione: {
     calculate(data) {
-      const mq = numberValue(data.metri_quadri_totali);
       const problemCost = {
         insetti: 25,
         blatte: 55,
         formiche: 30,
         zanzare: 45,
         altro: 60
-      }[data.tipo_problema] || 0;
-      const base = Math.max(90, 55 + mq * 1.2 + problemCost);
+      }[data.tipo_infestante] || 0;
+      const areaCost = String(data.interno_esterno || "").includes("esterno") ? 35 : 15;
+      const severity = { bassa: 0, media: 35, alta: 70 }[data.gravita_problema] || 0;
+      const base = Math.max(90, 75 + problemCost + areaCost + severity);
       return rangeFromBase(base, 0.22, "indicativa per intervento");
     }
   },
   giardinaggio: {
     calculate(data) {
-      const area = numberFromText(data.dimensione_area);
-      const text = `${data.tipo_lavorazione} ${data.dimensione_area}`.toLowerCase();
-      const potatura = text.includes("potatura") ? 45 : 0;
+      const area = numberValue(data.metratura_area_verde);
+      const text = `${data.tipo_intervento_giardino}`.toLowerCase();
+      const potatura = yesNoCost(data.potatura, 45);
+      const siepi = yesNoCost(data.presenza_siepi, 35);
+      const prato = yesNoCost(data.presenza_prato, 25);
       const pulizia = text.includes("pulizia") ? 25 : 0;
-      const base = 65 + (area ? area * 0.9 : 90) + potatura + pulizia;
+      const frequency = { settimanale: 40, mensile: 20, stagionale: 15 }[data.frequenza_giardino] || 0;
+      const base = 65 + (area ? area * 0.9 : 90) + potatura + siepi + prato + pulizia + frequency;
       return rangeFromBase(base, 0.24, "indicativa per intervento");
     }
   }
 };
 
-const GENERAL_FIELDS = ["nome", "telefono", "email", "zona", "orario"];
+const GENERAL_FIELDS = ["nome", "telefono", "email", "zona", "frequenza"];
 const GENERAL_FIELD_LABELS = {
   serviceType: "tipo servizio scelto",
-  nome: "nome cliente",
+  nome: "nome",
   telefono: "telefono",
   email: "email",
-  zona: "zona di Napoli",
+  zona: "zona",
+  frequenza: "frequenza del servizio",
+  data_preferita: "data preferita",
   orario: "preferenza oraria",
-  note: "note aggiuntive"
+  note: "note sull'intervento",
+  privacy: "accettazione informativa privacy"
 };
 
 let PREVENTIVO_CONFIG = FALLBACK_PREVENTIVO_CONFIG;
@@ -237,6 +264,13 @@ const output = document.getElementById("estimateOutput");
 const manualReview = document.getElementById("manualReview");
 const copyMessage = document.getElementById("copyMessage");
 const clientMessage = document.getElementById("clientMessage");
+const submissionFeedback = document.getElementById("submissionFeedback");
+const requestSummary = document.getElementById("requestSummary");
+const pdfLink = document.getElementById("pdfLink");
+const GOOGLE_SCRIPT_WEB_APP_URL = "GOOGLE_SCRIPT_WEB_APP_URL";
+const LOCAL_REQUESTS_KEY = "cmPulizieRequests";
+const BUSINESS_VAT = "09749501210";
+const REQUEST_STATUS_NEW = "Nuova";
 
 if (estimateForm && serviceType) {
   applyPreventivoConfigToForm();
@@ -401,7 +435,7 @@ function showServiceQuestions() {
   }
 }
 
-function handleEstimateSubmit(event) {
+async function handleEstimateSubmit(event) {
   event.preventDefault();
 
   const formData = new FormData(estimateForm);
@@ -409,6 +443,9 @@ function handleEstimateSubmit(event) {
   const selected = data.serviceType;
   const service = SERVICE_CONFIG[selected];
   const missing = [];
+  const privacyAccepted = estimateForm.querySelector('[name="privacy"]')?.checked === true;
+
+  setSubmissionFeedback("", true);
 
   if (!selected) {
     missing.push("tipo di servizio");
@@ -424,14 +461,41 @@ function handleEstimateSubmit(event) {
     });
   }
 
+  if (!privacyAccepted) {
+    missing.push("accettazione informativa privacy");
+  }
+
   const collected = collectFilledData(data, service);
   const range = missing.length || !service
     ? "Da stimare dopo i dati mancanti"
     : service.calculate(data);
-  const message = buildClientMessage({ data, service, missing, range });
-  const technical = buildTechnicalJson({ data, service, missing, range, collected });
+  const requestId = createRequestId();
+  const submittedAt = new Date().toISOString();
+  const message = buildClientMessage({ data, service, missing, range, requestId });
+  const technical = buildTechnicalJson({ data, service, missing, range, collected, requestId, submittedAt });
 
   renderEstimate({ data, service, missing, collected, range, message, technical });
+
+  if (missing.length) {
+    setSubmissionFeedback("Completa i dati indicati per inviare la richiesta. La stima resta indicativa e non vincolante.");
+    return;
+  }
+
+  setSubmissionFeedback("Invio richiesta in corso...");
+
+  try {
+    const result = await submitQuoteRequest(technical);
+    if (result?.pdfLink && pdfLink) {
+      pdfLink.href = result.pdfLink;
+      pdfLink.hidden = false;
+    }
+    setSubmissionFeedback(result?.mode === "local"
+      ? "Richiesta preparata in anteprima. Configura GOOGLE_SCRIPT_WEB_APP_URL per salvarla su Google Sheet e inviare le email."
+      : "Richiesta inviata correttamente. Riceverai una conferma e sarai ricontattato per i dettagli.");
+  } catch {
+    saveLocalRequest(technical);
+    setSubmissionFeedback("Richiesta preparata. Non riesco a raggiungere l'endpoint configurato: controlla Google Apps Script nel README.");
+  }
 }
 
 function renderEstimate({ data, service, missing, collected, range, message, technical }) {
@@ -439,13 +503,14 @@ function renderEstimate({ data, service, missing, collected, range, message, tec
   document.getElementById("zoneOutput").textContent = data.zona || "Da indicare";
   document.getElementById("rangeOutput").textContent = range;
   document.getElementById("clientMessage").value = message;
-  document.getElementById("technicalJson").textContent = JSON.stringify(technical, null, 2);
+  if (requestSummary) requestSummary.textContent = buildReadableRequestSummary(technical);
 
-  const status = getEstimateStatus();
-  const statusOutput = document.getElementById("statusOutput");
-  const statusGridOutput = document.getElementById("statusGridOutput");
-  if (statusOutput) statusOutput.textContent = status;
-  if (statusGridOutput) statusGridOutput.textContent = status;
+  const requestIdOutput = document.getElementById("requestIdOutput");
+  if (requestIdOutput) requestIdOutput.textContent = technical.id;
+  if (pdfLink) {
+    pdfLink.hidden = true;
+    pdfLink.removeAttribute("href");
+  }
 
   renderList(document.getElementById("collectedOutput"), collected.map((item) => `${item.label}: ${item.value}`));
   renderList(
@@ -461,15 +526,15 @@ function renderEstimate({ data, service, missing, collected, range, message, tec
   }
 }
 
-function buildClientMessage({ data, service, missing, range }) {
-  const greeting = data.nome ? `Buongiorno ${data.nome},` : "Buongiorno,";
+function buildClientMessage({ data, service, missing, range, requestId }) {
+  const greeting = data.nome ? `Ciao ${data.nome},` : "Ciao,";
   const operationSentence = getOperationSentence();
   const notice = getEstimateNotice();
 
   if (missing.length) {
     return `${greeting}
 
-grazie per aver contattato C.M. Pulizie. Per preparare una stima indicativa corretta per ${service ? service.label : "il servizio richiesto"} ci servono ancora questi dati:
+per preparare una prima stima corretta per ${service ? service.label : "il servizio richiesto"} servono ancora questi dati:
 ${missing.map((item) => `- ${item}`).join("\n")}
 
 ${operationSentence}.
@@ -479,24 +544,45 @@ ${notice}`;
 
   return `${greeting}
 
-grazie per aver contattato C.M. Pulizie. In base ai dati forniti, il servizio richiesto \u00e8 ${service.label} in zona ${data.zona}.
+abbiamo preparato il riepilogo della tua richiesta di preventivo.
 
-Fascia stimata: ${range}.
-Preferenza oraria indicata: ${data.orario}.
+Numero richiesta: ${requestId}
+Servizio: ${service.label}
+Zona: ${data.zona}
+Frequenza: ${data.frequenza}
+Data preferita: ${data.data_preferita || "da concordare"}
+Fascia stimata: ${range}
 
 ${operationSentence}.
+
+Ti ricontatteremo per confermare prezzo, disponibilit\u00e0 e dettagli dell'intervento.
+La richiesta non \u00e8 vincolante.
 
 ${notice}`;
 }
 
-function buildTechnicalJson({ data, service, missing, range, collected }) {
+function buildTechnicalJson({ data, service, missing, range, collected, requestId, submittedAt }) {
+  const serviceDetails = collectServiceDetails(data);
+
   return {
+    id: requestId,
+    submitted_at: submittedAt,
     assistant_role: PREVENTIVO_CONFIG.assistant_role,
     business: PREVENTIVO_CONFIG.business,
     goal: PREVENTIVO_CONFIG.goal,
+    partita_iva: BUSINESS_VAT,
+    status: REQUEST_STATUS_NEW,
+    service_key: data.serviceType || null,
     service_type: service ? service.label : null,
     zona: data.zona || null,
+    nome: data.nome || null,
+    telefono: data.telefono || null,
+    email: data.email || null,
+    frequenza: data.frequenza || null,
+    data_preferita: data.data_preferita || null,
+    note: data.note || null,
     collected_data: collected,
+    service_details: serviceDetails,
     missing_data: missing,
     indicative_estimate: {
       price_range: range,
@@ -504,26 +590,126 @@ function buildTechnicalJson({ data, service, missing, range, collected }) {
         ? "La stima resta sospesa finch\u00e9 non vengono raccolti tutti i dati essenziali."
         : "Fascia indicativa da confermare dopo sopralluogo tecnico."
     },
+    importo_stimato: range,
     mandatory_disclaimer: getEstimateNotice(),
-    status: getEstimateStatus(),
     critical_constraints: PREVENTIVO_CONFIG.critical_constraints,
-    automatic_sending: PREVENTIVO_CONFIG.critical_constraints.automatic_sending === true,
-    human_review_required: PREVENTIVO_CONFIG.critical_constraints.human_review_required !== false,
+    pdf_link: "",
     payload: data
   };
 }
 
 function collectFilledData(data, service) {
-  const fieldNames = ["serviceType", ...GENERAL_FIELDS, "note"];
-  if (service) fieldNames.push(...service.fields);
+  const activeQuestionFields = Array.from(estimateForm.querySelectorAll('.question-group:not([hidden]) [name]')).map((field) => field.name);
+  const fieldNames = ["serviceType", ...GENERAL_FIELDS, "data_preferita", "orario", "note", ...activeQuestionFields];
 
-  return fieldNames
+  return [...new Set(fieldNames)]
     .filter((name) => isFilled(data[name]))
     .map((name) => ({
       campo: name,
       label: name === "serviceType" ? "tipo servizio scelto" : labelForField(name),
       value: name === "serviceType" && SERVICE_CONFIG[data[name]] ? SERVICE_CONFIG[data[name]].label : data[name]
     }));
+}
+
+function collectServiceDetails(data) {
+  return Array.from(estimateForm.querySelectorAll('.question-group:not([hidden]) [name]'))
+    .filter((field) => isFilled(data[field.name]))
+    .map((field) => ({
+      campo: field.name,
+      label: labelForField(field.name),
+      value: data[field.name]
+    }));
+}
+
+function buildReadableRequestSummary(request) {
+  const serviceLines = request.service_details.length
+    ? request.service_details.map((item) => `- ${item.label}: ${item.value}`).join("\n")
+    : "- Nessun dettaglio specifico inserito";
+
+  return `Numero richiesta: ${request.id}
+Data invio: ${formatDateTime(request.submitted_at)}
+Nome: ${request.nome || "-"}
+Telefono: ${request.telefono || "-"}
+Email: ${request.email || "-"}
+Zona: ${request.zona || "-"}
+Servizio: ${request.service_type || "-"}
+Frequenza: ${request.frequenza || "-"}
+Data preferita: ${request.data_preferita || "da concordare"}
+Fascia stimata: ${request.indicative_estimate.price_range}
+
+Dettagli servizio:
+${serviceLines}
+
+Note: ${request.note || "-"}
+
+${request.mandatory_disclaimer}`;
+}
+
+async function submitQuoteRequest(request) {
+  if (!isGoogleScriptConfigured()) {
+    saveLocalRequest(request);
+    return { mode: "local" };
+  }
+
+  const response = await fetch(GOOGLE_SCRIPT_WEB_APP_URL, {
+    method: "POST",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify({
+      action: "createRequest",
+      request
+    })
+  });
+
+  if (!response.ok) {
+    throw new Error("Invio richiesta non riuscito");
+  }
+
+  const result = await response.json().catch(() => ({}));
+  saveLocalRequest({ ...request, pdf_link: result.pdfLink || request.pdf_link });
+  return {
+    mode: "remote",
+    pdfLink: result.pdfLink || ""
+  };
+}
+
+function isGoogleScriptConfigured() {
+  return GOOGLE_SCRIPT_WEB_APP_URL && GOOGLE_SCRIPT_WEB_APP_URL !== "GOOGLE_SCRIPT_WEB_APP_URL";
+}
+
+function saveLocalRequest(request) {
+  try {
+    const current = JSON.parse(localStorage.getItem(LOCAL_REQUESTS_KEY) || "[]");
+    const withoutDuplicate = current.filter((item) => item.id !== request.id);
+    withoutDuplicate.unshift(request);
+    localStorage.setItem(LOCAL_REQUESTS_KEY, JSON.stringify(withoutDuplicate.slice(0, 80)));
+  } catch {
+    // Local storage is only a development fallback.
+  }
+}
+
+function createRequestId() {
+  const date = new Date();
+  const day = date.toISOString().slice(0, 10).replace(/-/g, "");
+  const random = Math.random().toString(36).slice(2, 7).toUpperCase();
+  return `CMP-${day}-${random}`;
+}
+
+function setSubmissionFeedback(message, hidden = false) {
+  if (!submissionFeedback) return;
+  submissionFeedback.textContent = message;
+  submissionFeedback.hidden = hidden || !message;
+}
+
+function formatDateTime(value) {
+  if (!value) return "-";
+  try {
+    return new Intl.DateTimeFormat("it-IT", {
+      dateStyle: "short",
+      timeStyle: "short"
+    }).format(new Date(value));
+  } catch {
+    return value;
+  }
 }
 
 function renderList(list, items) {
@@ -570,7 +756,7 @@ function getEstimateNotice() {
 }
 
 function getEstimateStatus() {
-  return PREVENTIVO_CONFIG.estimate_output_format?.status || "da_revisionare";
+  return PREVENTIVO_CONFIG.estimate_output_format?.status || REQUEST_STATUS_NEW;
 }
 
 function getOperationSentence() {
@@ -582,6 +768,165 @@ function getOperationSentence() {
   const widerAreaText = widerAreas.length ? widerAreas.join(", ") : business.location || "Napoli";
 
   return `Operiamo principalmente in zona ${mainArea} e anche su ${widerAreaText}, con fascia operativa ${hours.start} - ${hours.end}`;
+}
+
+const adminForm = document.getElementById("adminLoadForm");
+const adminFeedback = document.getElementById("adminFeedback");
+const adminTableBody = document.getElementById("adminRequestsBody");
+const adminDetail = document.getElementById("adminDetail");
+
+if (adminForm && adminTableBody) {
+  renderAdminRequests(getLocalRequests());
+
+  adminForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const token = new FormData(adminForm).get("adminToken");
+    setAdminFeedback("Caricamento richieste...");
+
+    try {
+      const requests = await loadAdminRequests(token);
+      renderAdminRequests(requests);
+      setAdminFeedback(requests.length ? "Richieste caricate." : "Nessuna richiesta trovata.");
+    } catch {
+      renderAdminRequests(getLocalRequests());
+      setAdminFeedback("Endpoint admin non configurato o non raggiungibile. Mostro le richieste locali di prova.");
+    }
+  });
+
+  adminTableBody.addEventListener("click", async (event) => {
+    const button = event.target.closest("button");
+    if (!button) return;
+
+    const id = button.dataset.id;
+    const action = button.dataset.action;
+    const status = button.dataset.status;
+    const request = getLocalRequests().find((item) => item.id === id);
+
+    if (action === "details") {
+      if (adminDetail) {
+        adminDetail.hidden = false;
+        adminDetail.textContent = request ? buildReadableRequestSummary(request) : "Dettagli disponibili dall'endpoint protetto.";
+      }
+      return;
+    }
+
+    if (action === "status" && status) {
+      await updateRequestStatus(id, status, new FormData(adminForm).get("adminToken"));
+      setAdminFeedback(`Stato aggiornato: ${status}`);
+    }
+  });
+}
+
+function getLocalRequests() {
+  try {
+    return JSON.parse(localStorage.getItem(LOCAL_REQUESTS_KEY) || "[]");
+  } catch {
+    return [];
+  }
+}
+
+async function loadAdminRequests(token) {
+  if (!isGoogleScriptConfigured()) {
+    return getLocalRequests();
+  }
+
+  const url = `${GOOGLE_SCRIPT_WEB_APP_URL}?action=listRequests&token=${encodeURIComponent(token || "")}`;
+  const response = await fetch(url, { method: "GET" });
+  if (!response.ok) throw new Error("Admin non disponibile");
+  const result = await response.json();
+  return Array.isArray(result.requests) ? result.requests : [];
+}
+
+async function updateRequestStatus(id, status, token) {
+  const localRequests = getLocalRequests();
+  const nextRequests = localRequests.map((request) => request.id === id ? { ...request, status } : request);
+  localStorage.setItem(LOCAL_REQUESTS_KEY, JSON.stringify(nextRequests));
+  renderAdminRequests(nextRequests);
+
+  if (!isGoogleScriptConfigured()) return;
+
+  await fetch(GOOGLE_SCRIPT_WEB_APP_URL, {
+    method: "POST",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify({
+      action: "updateStatus",
+      token,
+      id,
+      status
+    })
+  });
+}
+
+function renderAdminRequests(requests) {
+  if (!adminTableBody) return;
+  adminTableBody.innerHTML = "";
+
+  if (!requests.length) {
+    const row = document.createElement("tr");
+    const cell = document.createElement("td");
+    cell.colSpan = 9;
+    cell.textContent = "Nessuna richiesta disponibile. Configura l'endpoint protetto per leggere Google Sheet.";
+    row.appendChild(cell);
+    adminTableBody.appendChild(row);
+    return;
+  }
+
+  requests.forEach((request) => {
+    const row = document.createElement("tr");
+    [
+      formatDateTime(request.submitted_at),
+      request.nome || "-",
+      request.telefono || "-",
+      request.email || "-",
+      request.zona || "-",
+      request.service_type || "-",
+      request.status || REQUEST_STATUS_NEW
+    ].forEach((value) => {
+      const cell = document.createElement("td");
+      cell.textContent = value;
+      row.appendChild(cell);
+    });
+
+    const pdfCell = document.createElement("td");
+    if (request.pdf_link) {
+      const link = document.createElement("a");
+      link.href = request.pdf_link;
+      link.target = "_blank";
+      link.rel = "noopener";
+      link.textContent = "PDF";
+      pdfCell.appendChild(link);
+    } else {
+      pdfCell.textContent = "-";
+    }
+    row.appendChild(pdfCell);
+
+    const actionsCell = document.createElement("td");
+    actionsCell.className = "admin-actions";
+    const detailButton = document.createElement("button");
+    detailButton.type = "button";
+    detailButton.dataset.action = "details";
+    detailButton.dataset.id = request.id;
+    detailButton.textContent = "Dettagli";
+    actionsCell.appendChild(detailButton);
+
+    ["Da ricontattare", "Preventivo inviato", "Confermata", "Completata"].forEach((status) => {
+      const statusButton = document.createElement("button");
+      statusButton.type = "button";
+      statusButton.dataset.action = "status";
+      statusButton.dataset.id = request.id;
+      statusButton.dataset.status = status;
+      statusButton.textContent = status;
+      actionsCell.appendChild(statusButton);
+    });
+
+    row.appendChild(actionsCell);
+    adminTableBody.appendChild(row);
+  });
+}
+
+function setAdminFeedback(message) {
+  if (!adminFeedback) return;
+  adminFeedback.textContent = message;
 }
 
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;

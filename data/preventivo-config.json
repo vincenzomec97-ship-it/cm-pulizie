@@ -15,10 +15,10 @@
   },
   "goal": "Aiutare i potenziali clienti a ottenere un preventivo di massima raccogliendo le informazioni corrette e guidandoli nel processo.",
   "services_offered": [
-    "Pulizia condomini",
-    "Pulizia appartamenti",
-    "Pulizia uffici",
-    "Sanificazione",
+    "Pulizie condomini",
+    "Pulizie appartamenti",
+    "Pulizie uffici",
+    "Sanificazione ambienti",
     "Disinfestazione",
     "Giardinaggio"
   ],
@@ -37,34 +37,38 @@
     "pulizia_condomini": {
       "required_questions": [
         "Quanti piani ha il condominio?",
-        "Sono presenti vetri da pulire?",
-        "Com'\u00e8 l'ingresso? Piccolo, medio o grande?",
+        "Quante scale ci sono?",
+        "\u00c8 presente ascensore?",
+        "\u00c8 presente androne?",
         "\u00c8 presente un cortile?",
-        "Sono presenti cantinole?",
-        "Quanti interventi extra al mese servono?",
-        "Quante spolverature mensili servono?",
+        "\u00c8 presente un garage?",
+        "Sono presenti vetri da pulire?",
         "Quanti giorni a settimana \u00e8 richiesto il servizio?"
       ],
       "essential_fields": [
         "numero_piani",
-        "presenza_vetri",
-        "caratteristiche_ingresso",
+        "numero_scale",
+        "presenza_ascensore",
+        "presenza_androne",
         "presenza_cortile",
-        "presenza_cantinole",
-        "interventi_extra_mensili",
-        "spolverature_mensili",
+        "presenza_garage",
+        "presenza_vetri",
         "giorni_settimana"
       ]
     },
     "pulizia_appartamenti": {
       "required_questions": [
-        "Quanti bagni ci sono?",
         "Quanti metri quadri \u00e8 l'appartamento?",
+        "Quante stanze ci sono?",
+        "Quanti bagni ci sono?",
+        "Serve una pulizia ordinaria o profonda?",
         "Il livello di sporcizia \u00e8 basso, medio o alto?"
       ],
       "essential_fields": [
-        "numero_bagni",
         "metri_quadri",
+        "numero_stanze",
+        "numero_bagni",
+        "tipo_pulizia",
         "livello_sporcizia"
       ]
     },
@@ -73,41 +77,61 @@
         "Quanti metri quadri \u00e8 l'ufficio?",
         "Quanti bagni ci sono?",
         "Quante stanze o postazioni ci sono?",
-        "Quanti giorni a settimana \u00e8 richiesto il servizio?"
+        "Quanti giorni a settimana \u00e8 richiesto il servizio?",
+        "Ci sono orari preferiti?"
       ],
       "essential_fields": [
         "metri_quadri",
         "numero_bagni",
         "numero_stanze_o_postazioni",
-        "giorni_settimana"
+        "giorni_settimana",
+        "orari_preferiti"
       ]
     },
     "sanificazione": {
       "required_questions": [
-        "Quanti metri quadri totali bisogna sanificare?"
+        "Quanti metri quadri totali bisogna sanificare?",
+        "Che tipo di ambiente bisogna sanificare?",
+        "Che livello di intervento serve?",
+        "Quanto \u00e8 urgente?"
       ],
       "essential_fields": [
-        "metri_quadri_totali"
+        "metri_quadri_totali",
+        "tipo_ambiente",
+        "livello_intervento",
+        "urgenza"
       ]
     },
     "disinfestazione": {
       "required_questions": [
-        "Quanti metri quadri totali bisogna trattare?",
-        "Che tipo di problema ha riscontrato? Insetti, blatte, formiche, zanzare o altro?"
+        "Che tipo di infestante ha riscontrato?",
+        "Quale zona \u00e8 interessata?",
+        "Il problema \u00e8 interno o esterno?",
+        "Quanto \u00e8 grave il problema?"
       ],
       "essential_fields": [
-        "metri_quadri_totali",
-        "tipo_problema"
+        "tipo_infestante",
+        "zona_interessata",
+        "interno_esterno",
+        "gravita_problema"
       ]
     },
     "giardinaggio": {
       "required_questions": [
-        "Che tipo di lavorazione serve? Taglio erba, potatura, pulizia giardino, manutenzione o altro?",
-        "Quanto \u00e8 grande circa l'area verde?"
+        "Quanto \u00e8 grande circa l'area verde?",
+        "Che tipo di intervento serve?",
+        "Sono presenti siepi?",
+        "Sono presenti prato o aiuole?",
+        "Serve potatura?",
+        "Con quale frequenza serve il servizio?"
       ],
       "essential_fields": [
-        "tipo_lavorazione",
-        "dimensione_area"
+        "metratura_area_verde",
+        "tipo_intervento_giardino",
+        "presenza_siepi",
+        "presenza_prato",
+        "potatura",
+        "frequenza_giardino"
       ]
     }
   },
@@ -115,7 +139,7 @@
     "never_give_final_price": true,
     "always_use_disclaimer": "Questa \u00e8 una stima indicativa basata sui dati forniti, il preventivo finale sar\u00e0 confermato dopo sopralluogo tecnico.",
     "ask_missing_essential_data_before_estimate": true,
-    "automatic_sending": false,
+    "automatic_sending": true,
     "human_review_required": true
   },
   "estimate_output_format": {
@@ -127,7 +151,7 @@
       "notes": "eventuali elementi che possono modificare il prezzo"
     },
     "mandatory_disclaimer": "Questa \u00e8 una stima indicativa basata sui dati forniti, il preventivo finale sar\u00e0 confermato dopo sopralluogo tecnico.",
-    "status": "da_revisionare"
+    "status": "Nuova"
   },
-  "first_message_to_user": "Buongiorno, certo. Per aiutarla al meglio con un preventivo di massima, mi dica prima quale servizio le interessa tra: pulizia condomini, appartamenti, uffici, sanificazione, disinfestazione o giardinaggio."
+  "first_message_to_user": "Buongiorno, certo. Per aiutarla al meglio con un preventivo di massima, mi dica prima quale servizio le interessa tra: pulizie condomini, pulizie appartamenti, pulizie uffici, sanificazione ambienti, disinfestazione o giardinaggio."
 }
