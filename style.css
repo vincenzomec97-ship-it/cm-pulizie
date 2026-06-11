@@ -3415,3 +3415,90 @@ textarea:focus-visible {
     margin-top: -8px;
   }
 }
+
+.team-card img[src$="furgone.jpeg"],
+.info-panel img[src$="squadra-team.jpeg"] {
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  max-height: none;
+  object-fit: contain;
+  object-position: center;
+}
+
+/* Premium footer refinement */
+.rich-footer {
+  align-items: start;
+  row-gap: 34px;
+  padding-top: clamp(46px, 6vw, 72px);
+  padding-bottom: 34px;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(58, 164, 216, 0.34), transparent 34%),
+    linear-gradient(135deg, #113b5b 0%, #1c5d91 58%, #287fb4 100%);
+}
+
+.rich-footer .footer-brand strong {
+  margin-bottom: 12px;
+  color: var(--white);
+  font-size: clamp(30px, 3vw, 38px);
+  line-height: 1;
+}
+
+.rich-footer .footer-brand p,
+.rich-footer .footer-col p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.rich-footer h2 {
+  position: relative;
+  margin-bottom: 18px;
+  font-size: 22px;
+  line-height: 1.1;
+}
+
+.rich-footer h2::after {
+  content: "";
+  display: block;
+  width: 34px;
+  height: 3px;
+  margin-top: 10px;
+  border-radius: 999px;
+  background: var(--yellow);
+}
+
+.rich-footer .footer-col {
+  gap: 10px;
+}
+
+.rich-footer .footer-col a,
+.rich-footer .footer-cta,
+.footer-phone-list {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.rich-footer .footer-col a,
+.rich-footer .footer-cta {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.footer-phone-list {
+  margin-top: 8px;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 800;
+}
+
+.rich-footer small {
+  margin-top: 8px;
+  padding-top: 24px;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+@media (max-width: 680px) {
+  .rich-footer {
+    row-gap: 26px;
+  }
+}
