@@ -162,6 +162,22 @@ const SERVICE_LABELS = {
   giardinaggio: "Giardinaggio"
 };
 
+const SERVICE_URL_ALIASES = {
+  condominio: "pulizia_condomini",
+  condomini: "pulizia_condomini",
+  pulizia_condomini: "pulizia_condomini",
+  appartamento: "pulizia_appartamenti",
+  appartamenti: "pulizia_appartamenti",
+  pulizia_appartamenti: "pulizia_appartamenti",
+  ufficio: "pulizia_uffici",
+  uffici: "pulizia_uffici",
+  pulizia_uffici: "pulizia_uffici",
+  sanificazione: "sanificazione",
+  sanificazione_ambienti: "sanificazione",
+  disinfestazione: "disinfestazione",
+  giardinaggio: "giardinaggio"
+};
+
 const SERVICE_RULES = {
   pulizia_condomini: {
     calculate(data) {
@@ -274,6 +290,7 @@ const REQUEST_STATUS_NEW = "Nuova";
 
 if (estimateForm && serviceType) {
   applyPreventivoConfigToForm();
+  applyServiceFromUrlParameter();
   loadPreventivoConfig();
   serviceType.addEventListener("change", showServiceQuestions);
   estimateForm.addEventListener("submit", handleEstimateSubmit);
@@ -326,7 +343,7 @@ async function loadPreventivoConfig() {
 }
 
 function applyPreventivoConfigToForm() {
-  const selected = serviceType.value;
+  const selected = serviceType.value || getServiceFromUrlParameter();
   const services = getConfiguredServiceKeys();
   serviceType.innerHTML = '<option value="">Scegli un servizio</option>';
 
@@ -342,6 +359,23 @@ function applyPreventivoConfigToForm() {
   }
 
   showServiceQuestions();
+}
+
+function applyServiceFromUrlParameter() {
+  const serviceFromUrl = getServiceFromUrlParameter();
+  if (!serviceFromUrl || !SERVICE_CONFIG[serviceFromUrl]) return;
+
+  serviceType.value = serviceFromUrl;
+  showServiceQuestions();
+}
+
+function getServiceFromUrlParameter() {
+  const params = new URLSearchParams(window.location.search);
+  const rawService = params.get("servizio") || params.get("service");
+  if (!rawService) return "";
+
+  const normalized = normalizeServiceKey(rawService);
+  return SERVICE_URL_ALIASES[normalized] || "";
 }
 
 function mergePreventivoConfig(config) {

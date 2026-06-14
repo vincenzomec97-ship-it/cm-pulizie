@@ -1,0 +1,508 @@
+{
+  "assistant": {
+    "name": "Assistente CM Pulizie",
+    "language": "it",
+    "welcomeMessage": "Ciao, sono l'assistente virtuale di CM Pulizie. Posso aiutarti a scegliere il servizio giusto o a richiedere un preventivo.",
+    "fallbackMessage": "Non sono riuscito a capire bene la richiesta. Posso aiutarti con i servizi, le zone coperte o il preventivo. In alternativa puoi parlare direttamente con CM Pulizie su WhatsApp.",
+    "typingMessage": "Sto scrivendo..."
+  },
+  "company": {
+    "name": "CM Pulizie",
+    "location": "Vomero, Napoli",
+    "phone": "3383861399",
+    "whatsappUrl": "https://wa.me/393383861399",
+    "quotePage": "prenota.html",
+    "servicesPage": "servizi.html",
+    "privacyPage": "privacy.html"
+  },
+  "ui": {
+    "position": "bottom-right",
+    "buttonLabel": "Hai bisogno di aiuto?",
+    "openAutomatically": false,
+    "closable": true,
+    "mobileFriendly": true,
+    "showOnPages": [
+      "index.html",
+      "servizi.html",
+      "prenota.html"
+    ],
+    "hideOnPages": [
+      "admin.html"
+    ]
+  },
+  "quickActions": [
+    {
+      "id": "services",
+      "label": "Scopri i servizi",
+      "type": "message",
+      "value": "Quali servizi offrite?"
+    },
+    {
+      "id": "choose-service",
+      "label": "Aiutami a scegliere",
+      "type": "flow",
+      "value": "service-selector"
+    },
+    {
+      "id": "quote",
+      "label": "Richiedi preventivo",
+      "type": "link",
+      "value": "prenota.html"
+    },
+    {
+      "id": "whatsapp",
+      "label": "Scrivici su WhatsApp",
+      "type": "external-link",
+      "value": "https://wa.me/393383861399"
+    }
+  ],
+  "behavior": {
+    "doNotInventPrices": true,
+    "doNotConfirmBookings": true,
+    "doNotPromiseAvailability": true,
+    "doNotCollectPaymentData": true,
+    "redirectUnknownRequestsToHuman": true,
+    "maximumMessageLength": 300
+  },
+  "privacy": {
+    "storeMessages": false,
+    "collectPersonalData": false,
+    "message": "Non inserire dati sensibili nella chat. Per inviare nome, telefono ed email utilizza il modulo preventivo."
+  },
+  "security": {
+    "frontendOnlyMode": true,
+    "apiKeyInFrontend": false,
+    "exposePrivateTokens": false,
+    "aiBackendEnabled": false
+  },
+  "fallbackActions": [
+    {
+      "id": "services",
+      "label": "Scopri i servizi",
+      "type": "message",
+      "value": "Quali servizi offrite?"
+    },
+    {
+      "id": "quote",
+      "label": "Richiedi preventivo",
+      "type": "link",
+      "value": "prenota.html"
+    },
+    {
+      "id": "whatsapp",
+      "label": "WhatsApp",
+      "type": "external-link",
+      "value": "https://wa.me/393383861399"
+    }
+  ],
+  "suggestedActions": {
+    "services": [
+      {
+        "id": "quote",
+        "label": "Richiedi preventivo",
+        "type": "link",
+        "value": "prenota.html"
+      },
+      {
+        "id": "choose-service",
+        "label": "Aiutami a scegliere",
+        "type": "flow",
+        "value": "service-selector"
+      }
+    ],
+    "quote": [
+      {
+        "id": "quote",
+        "label": "Apri modulo preventivo",
+        "type": "link",
+        "value": "prenota.html"
+      },
+      {
+        "id": "whatsapp",
+        "label": "WhatsApp",
+        "type": "external-link",
+        "value": "https://wa.me/393383861399"
+      }
+    ],
+    "whatsapp": [
+      {
+        "id": "whatsapp",
+        "label": "Scrivici su WhatsApp",
+        "type": "external-link",
+        "value": "https://wa.me/393383861399"
+      }
+    ]
+  },
+  "whatsapp": {
+    "message": "Ciao, ho visitato il sito CM Pulizie e avrei bisogno di informazioni su un servizio."
+  },
+  "serviceSelector": {
+    "intro": "Ti aiuto a scegliere il percorso piu adatto. Seleziona il tipo di ambiente o servizio:",
+    "options": [
+      {
+        "id": "condominio",
+        "label": "Condominio",
+        "description": "Per scale, androne, ascensore, cortili, garage e spazi comuni.",
+        "url": "prenota.html?servizio=pulizia_condomini"
+      },
+      {
+        "id": "appartamento",
+        "label": "Appartamento",
+        "description": "Per pulizie ordinarie o profonde di case e appartamenti.",
+        "url": "prenota.html?servizio=pulizia_appartamenti"
+      },
+      {
+        "id": "ufficio",
+        "label": "Ufficio",
+        "description": "Per studi, postazioni, bagni, sale riunioni e aree comuni.",
+        "url": "prenota.html?servizio=pulizia_uffici"
+      },
+      {
+        "id": "sanificazione",
+        "label": "Sanificazione",
+        "description": "Per ambienti privati, condomini e aziende da valutare in base alla metratura.",
+        "url": "prenota.html?servizio=sanificazione"
+      },
+      {
+        "id": "disinfestazione",
+        "label": "Disinfestazione",
+        "description": "Per insetti, blatte, formiche, zanzare o altri infestanti.",
+        "url": "prenota.html?servizio=disinfestazione"
+      },
+      {
+        "id": "giardinaggio",
+        "label": "Giardinaggio",
+        "description": "Per prato, siepi, aiuole, potature e manutenzione aree verdi.",
+        "url": "prenota.html?servizio=giardinaggio"
+      }
+    ]
+  },
+  "faqs": [
+    {
+      "id": "services",
+      "questions": [
+        "Quali servizi offrite?",
+        "Che servizi fate?",
+        "Di cosa vi occupate?"
+      ],
+      "keywords": [
+        "servizi",
+        "servizi offrite",
+        "che servizi",
+        "cosa fate",
+        "di cosa vi occupate",
+        "pulizie uffici condomini appartamenti",
+        "sanificazione",
+        "disinfestazione",
+        "giardinaggio"
+      ],
+      "answer": "CM Pulizie offre pulizie per condomini, appartamenti e uffici, oltre a sanificazione ambienti, disinfestazione e giardinaggio.",
+      "actions": "services"
+    },
+    {
+      "id": "areas",
+      "questions": [
+        "In quali zone lavorate?",
+        "Lavorate al Vomero?",
+        "Operate a Napoli?"
+      ],
+      "keywords": [
+        "zone",
+        "zona",
+        "dove lavorate",
+        "vomero",
+        "napoli",
+        "aree coperte",
+        "zone coperte"
+      ],
+      "answer": "CM Pulizie e operativa al Vomero e a Napoli. Per verificare la disponibilita in una zona specifica puoi inviare una richiesta o contattare il titolare su WhatsApp.",
+      "actions": "quote"
+    },
+    {
+      "id": "condominiums",
+      "questions": [
+        "Fate pulizie per condomini?",
+        "Pulite scale condominiali?"
+      ],
+      "keywords": [
+        "condominio",
+        "condomini",
+        "pulizie condomini",
+        "scale condominiali",
+        "androne",
+        "ascensore",
+        "cortile",
+        "garage",
+        "spazi comuni"
+      ],
+      "answer": "Si. Il servizio puo comprendere scale, androni, ascensori, cortili, garage e altri spazi comuni. La stima cambia in base al numero di piani, scale, spazi presenti e frequenza richiesta.",
+      "actions": [
+        {
+          "id": "quote-condominio",
+          "label": "Preventivo condominio",
+          "type": "link",
+          "value": "prenota.html?servizio=pulizia_condomini"
+        }
+      ]
+    },
+    {
+      "id": "offices",
+      "questions": [
+        "Fate pulizie per uffici?",
+        "Pulite studi professionali?"
+      ],
+      "keywords": [
+        "ufficio",
+        "uffici",
+        "pulizie uffici",
+        "studio",
+        "studi",
+        "postazioni",
+        "sale riunioni",
+        "ambiente di lavoro"
+      ],
+      "answer": "Si. CM Pulizie organizza interventi per uffici, studi e ambienti di lavoro. La stima puo considerare metratura, numero di bagni, postazioni, frequenza e orari disponibili.",
+      "actions": [
+        {
+          "id": "quote-ufficio",
+          "label": "Preventivo ufficio",
+          "type": "link",
+          "value": "prenota.html?servizio=pulizia_uffici"
+        }
+      ]
+    },
+    {
+      "id": "apartments",
+      "questions": [
+        "Fate pulizie per appartamenti?",
+        "Pulite case private?"
+      ],
+      "keywords": [
+        "appartamento",
+        "appartamenti",
+        "casa",
+        "case",
+        "pulizie appartamenti",
+        "pulizia casa",
+        "pulizia profonda",
+        "pulizia ordinaria",
+        "balconi",
+        "terrazzi"
+      ],
+      "answer": "Si. Sono disponibili pulizie ordinarie e profonde per case e appartamenti. La stima puo considerare metratura, stanze, bagni, balconi e tipo di intervento.",
+      "actions": [
+        {
+          "id": "quote-appartamento",
+          "label": "Preventivo appartamento",
+          "type": "link",
+          "value": "prenota.html?servizio=pulizia_appartamenti"
+        }
+      ]
+    },
+    {
+      "id": "sanitization",
+      "questions": [
+        "Fate sanificazione?",
+        "Sanificate ambienti?"
+      ],
+      "keywords": [
+        "sanificazione",
+        "sanificazioni",
+        "sanificare",
+        "sanificazione ambienti",
+        "ambiente da sanificare",
+        "igienizzazione"
+      ],
+      "answer": "Si. La richiesta viene valutata in base alla metratura, al tipo di ambiente, al livello di intervento e all'urgenza.",
+      "actions": [
+        {
+          "id": "quote-sanificazione",
+          "label": "Preventivo sanificazione",
+          "type": "link",
+          "value": "prenota.html?servizio=sanificazione"
+        }
+      ]
+    },
+    {
+      "id": "pest-control",
+      "questions": [
+        "Fate disinfestazione?",
+        "Intervenite contro blatte o formiche?"
+      ],
+      "keywords": [
+        "disinfestazione",
+        "disinfestazioni",
+        "insetti",
+        "blatte",
+        "formiche",
+        "zanzare",
+        "infestanti",
+        "scarafaggi"
+      ],
+      "answer": "Si. Per preparare una stima servono informazioni come tipo di infestante, ambiente interno o esterno, zona interessata e gravita del problema.",
+      "actions": [
+        {
+          "id": "quote-disinfestazione",
+          "label": "Preventivo disinfestazione",
+          "type": "link",
+          "value": "prenota.html?servizio=disinfestazione"
+        }
+      ]
+    },
+    {
+      "id": "gardening",
+      "questions": [
+        "Fate giardinaggio?",
+        "Vi occupate di aree verdi?"
+      ],
+      "keywords": [
+        "giardinaggio",
+        "giardino",
+        "aree verdi",
+        "taglio erba",
+        "prato",
+        "siepi",
+        "aiuole",
+        "potatura",
+        "potature"
+      ],
+      "answer": "Si. Il servizio puo comprendere cura del prato, siepi, aiuole, potature e manutenzione delle aree verdi. La stima cambia in base alla superficie e al tipo di intervento.",
+      "actions": [
+        {
+          "id": "quote-giardinaggio",
+          "label": "Preventivo giardinaggio",
+          "type": "link",
+          "value": "prenota.html?servizio=giardinaggio"
+        }
+      ]
+    },
+    {
+      "id": "prices",
+      "questions": [
+        "Quanto costa?",
+        "Che prezzo fate?",
+        "Avete un listino?"
+      ],
+      "keywords": [
+        "quanto costa",
+        "costo",
+        "costi",
+        "prezzo",
+        "prezzi",
+        "tariffa",
+        "tariffe",
+        "listino",
+        "preventivo economico"
+      ],
+      "answer": "Il prezzo dipende dal servizio, dalle dimensioni dell'ambiente, dalla frequenza e dalle condizioni del luogo. Compila il modulo per ricevere una prima stima indicativa.",
+      "actions": "quote"
+    },
+    {
+      "id": "quote",
+      "questions": [
+        "Posso avere un preventivo?",
+        "Come richiedo un preventivo?"
+      ],
+      "keywords": [
+        "preventivo",
+        "richiedere preventivo",
+        "prima stima",
+        "stima indicativa",
+        "modulo preventivo",
+        "voglio un preventivo"
+      ],
+      "answer": "Certo. Il modulo cambia automaticamente in base al servizio scelto, cosi vengono richieste soltanto le informazioni utili per preparare una stima.",
+      "actions": "quote"
+    },
+    {
+      "id": "non-binding",
+      "questions": [
+        "Il preventivo e vincolante?",
+        "La stima e definitiva?"
+      ],
+      "keywords": [
+        "vincolante",
+        "non vincolante",
+        "definitivo",
+        "prezzo finale",
+        "stima definitiva",
+        "confermato"
+      ],
+      "answer": "No. La richiesta e la prima stima non sono vincolanti. Il prezzo finale viene confermato dopo la verifica dei dettagli o un eventuale sopralluogo.",
+      "actions": "quote"
+    },
+    {
+      "id": "contacts",
+      "questions": [
+        "Come posso contattarvi?",
+        "Avete WhatsApp?"
+      ],
+      "keywords": [
+        "contatto",
+        "contatti",
+        "contattarvi",
+        "whatsapp",
+        "telefono",
+        "numero",
+        "scrivervi",
+        "parlare con titolare"
+      ],
+      "answer": "Puoi compilare il modulo preventivo oppure contattare CM Pulizie direttamente tramite WhatsApp.",
+      "actions": "whatsapp"
+    },
+    {
+      "id": "availability",
+      "questions": [
+        "Siete aperti oggi?",
+        "Avete disponibilita oggi?"
+      ],
+      "keywords": [
+        "aperti oggi",
+        "aperto oggi",
+        "disponibilita",
+        "disponibile",
+        "oggi",
+        "domani",
+        "orari",
+        "appuntamento oggi"
+      ],
+      "answer": "Gli orari e la disponibilita devono essere confermati direttamente dal titolare. Puoi contattare CM Pulizie su WhatsApp.",
+      "actions": "whatsapp"
+    },
+    {
+      "id": "booking",
+      "questions": [
+        "Posso prenotare?",
+        "Vorrei prenotare un intervento."
+      ],
+      "keywords": [
+        "prenotare",
+        "prenotazione",
+        "appuntamento",
+        "fissare",
+        "confermare intervento",
+        "prenota",
+        "riservare"
+      ],
+      "answer": "Puoi inviare una richiesta tramite il modulo preventivo. La disponibilita e l'appuntamento saranno confermati successivamente dal titolare.",
+      "actions": "quote"
+    },
+    {
+      "id": "direct-booking",
+      "questions": [
+        "Posso prenotare direttamente in chat?",
+        "Confermi un appuntamento qui?"
+      ],
+      "keywords": [
+        "prenotare in chat",
+        "direttamente in chat",
+        "conferma appuntamento",
+        "confermare appuntamento",
+        "blocca appuntamento",
+        "prenotazione diretta"
+      ],
+      "answer": "Non posso confermare direttamente una prenotazione. Posso accompagnarti al modulo preventivo oppure metterti in contatto tramite WhatsApp.",
+      "actions": "quote"
+    }
+  ]
+}

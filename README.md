@@ -82,3 +82,79 @@ Il PDF viene generato da Google Apps Script con:
 ## GitHub Pages
 
 Questo sito puo essere pubblicato su GitHub Pages caricando tutti i file del progetto. GitHub Pages non esegue backend: per ricevere richieste vere devi configurare Google Apps Script o un backend serverless.
+
+## Assistente virtuale
+
+L'assistente virtuale e un widget statico e deterministico. Non usa AI esterna, non invia i messaggi a server esterni, non usa cookie e non salva dati personali. Le risposte arrivano solo dalla configurazione controllata.
+
+File aggiunti:
+
+- `assets/css/chatbot.css` - stile isolato del pulsante flottante e della finestra chat.
+- `assets/js/chatbot.js` - logica frontend sicura, senza API key e senza backend.
+- `data/chatbot-config.json` - FAQ, parole chiave, risposte controllate, azioni rapide e percorso guidato.
+
+La chat e caricata in:
+
+- `index.html`
+- `servizi.html`
+- `prenota.html`
+
+Non viene caricata in `admin.html`.
+
+### Modificare risposte e FAQ
+
+Apri `data/chatbot-config.json` e aggiorna l'array `faqs`.
+
+Ogni FAQ puo avere:
+
+- `questions` - esempi di domande.
+- `keywords` - parole chiave usate dal matching.
+- `answer` - risposta controllata mostrata al cliente.
+- `actions` - pulsanti suggeriti dopo la risposta.
+
+Non inserire prezzi, disponibilita o promesse non verificabili se non sono confermati manualmente.
+
+### Modificare WhatsApp
+
+Il numero attuale usato dalla chat e `3383861399`.
+
+Per cambiarlo aggiorna in `data/chatbot-config.json`:
+
+- `company.phone`
+- `company.whatsappUrl`
+- il link dell'azione rapida `whatsapp`
+- eventuali azioni suggerite con `wa.me`
+
+Il messaggio precompilato si modifica in `whatsapp.message`.
+
+### Percorso guidato servizi
+
+Il percorso "Aiutami a scegliere" si trova in `serviceSelector.options`.
+
+I link puntano a `prenota.html?servizio=...` e aprono il modulo dinamico sul servizio corretto. I valori gestiti dal sito sono:
+
+- `pulizia_condomini`
+- `pulizia_appartamenti`
+- `pulizia_uffici`
+- `sanificazione`
+- `disinfestazione`
+- `giardinaggio`
+
+### Testare la chat
+
+1. Apri `index.html`, `servizi.html` o `prenota.html`.
+2. Clicca il pulsante flottante in basso a destra.
+3. Prova:
+   - "Quali servizi offrite?"
+   - "Quanto costa?"
+   - "Fate pulizie condomini?"
+   - "Posso prenotare?"
+   - una domanda non riconosciuta
+4. Verifica che il prezzo non venga inventato e che le richieste sconosciute rimandino a modulo o WhatsApp.
+5. Apri `prenota.html?servizio=pulizia_uffici` e controlla che il servizio sia gia selezionato.
+
+Su GitHub Pages il file `data/chatbot-config.json` viene caricato via `fetch`. Aprendo il sito direttamente con `file://`, il browser puo bloccare il caricamento JSON: in quel caso la chat usa una configurazione interna di emergenza e mostra un messaggio semplice.
+
+### Privacy
+
+La chat non deve essere usata per inviare nome, telefono, email o dati sensibili. Per i dati personali usa sempre il modulo preventivo con checkbox privacy.
