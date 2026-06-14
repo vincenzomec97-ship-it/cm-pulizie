@@ -3372,7 +3372,8 @@ textarea:focus-visible {
 .emotional-note {
   position: relative;
   overflow: hidden;
-  max-width: 1040px;
+  width: min(1180px, calc(100% - 40px));
+  max-width: 1180px;
   padding: clamp(30px, 5vw, 52px);
   border: 1px solid rgba(28, 93, 145, 0.12);
   border-left: 7px solid var(--yellow);
@@ -3382,7 +3383,7 @@ textarea:focus-visible {
 }
 
 .emotional-note h2 {
-  max-width: 840px;
+  max-width: 980px;
   margin: 0;
   color: var(--blue-deep);
   font-size: clamp(28px, 4vw, 44px);
@@ -3390,7 +3391,7 @@ textarea:focus-visible {
 }
 
 .emotional-note p {
-  max-width: 780px;
+  max-width: 920px;
   margin: 18px 0 0;
   color: var(--grey);
   font-size: 19px;
