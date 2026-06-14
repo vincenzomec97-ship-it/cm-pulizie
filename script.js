@@ -40,7 +40,7 @@ const FALLBACK_PREVENTIVO_CONFIG = {
     main_area: "Vomero",
     service_area: ["Vomero", "Napoli citt\u00e0"],
     operating_hours: {
-      start: "08:00",
+      start: "07:00",
       end: "15:00"
     }
   },
@@ -287,8 +287,10 @@ const GOOGLE_SCRIPT_WEB_APP_URL = "GOOGLE_SCRIPT_WEB_APP_URL";
 const LOCAL_REQUESTS_KEY = "cmPulizieRequests";
 const BUSINESS_VAT = "09749501210";
 const REQUEST_STATUS_NEW = "Nuova";
+const serviceQuestionGroups = new Map();
 
 if (estimateForm && serviceType) {
+  initServiceQuestionGroups();
   applyPreventivoConfigToForm();
   applyServiceFromUrlParameter();
   loadPreventivoConfig();
@@ -453,20 +455,61 @@ function normalizeServiceKey(label) {
     .replace(/^_+|_+$/g, "");
 }
 
+function initServiceQuestionGroups() {
+  if (!serviceQuestions) return;
+
+  serviceQuestions.querySelectorAll(".question-group").forEach((group) => {
+    serviceQuestionGroups.set(group.dataset.service, group);
+    setQuestionGroupActive(group, false);
+    group.remove();
+  });
+}
+
+function setQuestionGroupActive(group, active) {
+  group.hidden = !active;
+  group.querySelectorAll("input, select, textarea").forEach((field) => {
+    field.disabled = !active;
+  });
+}
+
+function clearQuestionGroup(group) {
+  group.querySelectorAll("input, select, textarea").forEach((field) => {
+    if (field.type === "checkbox" || field.type === "radio") {
+      field.checked = false;
+    } else {
+      field.value = "";
+    }
+  });
+}
+
 function showServiceQuestions() {
   const selected = serviceType.value;
 
-  document.querySelectorAll(".question-group").forEach((group) => {
-    const active = group.dataset.service === selected;
-    group.hidden = !active;
-    group.querySelectorAll("input, select, textarea").forEach((field) => {
-      field.disabled = !active;
-    });
+  Array.from(serviceQuestions?.querySelectorAll(".question-group") || []).forEach((group) => {
+    if (group.dataset.service !== selected) {
+      setQuestionGroupActive(group, false);
+      clearQuestionGroup(group);
+      group.remove();
+    }
   });
 
   if (serviceQuestions) {
     serviceQuestions.hidden = !selected;
   }
+
+  if (!selected || !serviceQuestions) return;
+
+  const activeGroup = serviceQuestionGroups.get(selected);
+  if (!activeGroup) {
+    serviceQuestions.hidden = true;
+    return;
+  }
+
+  if (!activeGroup.isConnected) {
+    serviceQuestions.appendChild(activeGroup);
+  }
+
+  setQuestionGroupActive(activeGroup, true);
 }
 
 async function handleEstimateSubmit(event) {
