@@ -3033,6 +3033,11 @@ body {
     border-radius: 22px;
   }
 
+  .about-story {
+    padding: 34px 24px;
+    border-radius: 22px;
+  }
+
   .operations-list article {
     grid-template-columns: 1fr;
   }
@@ -3331,7 +3336,37 @@ textarea:focus-visible {
 }
 
 .about-story {
-  padding-top: clamp(64px, 7vw, 104px);
+  position: relative;
+  overflow: hidden;
+  padding: clamp(46px, 6vw, 76px);
+  border: 1px solid rgba(28, 93, 145, 0.12);
+  border-radius: 28px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(240, 249, 255, 0.9)),
+    radial-gradient(circle at 84% 18%, rgba(58, 164, 216, 0.12), transparent 34%);
+  box-shadow: 0 28px 70px rgba(28, 93, 145, 0.1);
+}
+
+.about-story::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 8px;
+  background: linear-gradient(180deg, var(--yellow), var(--cyan));
+}
+
+.about-story .about-copy,
+.about-story .team-card {
+  position: relative;
+  z-index: 1;
+}
+
+.about-story .team-card {
+  border-color: rgba(28, 93, 145, 0.14);
+}
+
+.about-story .primary-cta {
+  margin-top: 22px;
 }
 
 .emotional-note {
@@ -4240,8 +4275,9 @@ textarea:focus-visible {
 
 /* Homepage hero precision pass */
 .home-page .hero-inner {
+  --home-hero-panel-height: clamp(424px, 33vw, 456px);
   grid-template-columns: minmax(288px, 0.95fr) minmax(318px, 340px) minmax(372px, 1.2fr);
-  align-items: center;
+  align-items: stretch;
   padding: clamp(24px, 3vw, 36px);
   background:
     linear-gradient(90deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.82) 45%, rgba(247, 251, 254, 0.72) 100%);
@@ -4269,10 +4305,15 @@ textarea:focus-visible {
 
 .home-page .quote-form {
   width: 100%;
-  height: clamp(420px, 33vw, 456px);
-  min-height: 0;
+  height: var(--home-hero-panel-height);
+  min-height: var(--home-hero-panel-height);
+  align-self: center;
+  margin: 0;
   padding: clamp(20px, 2vw, 24px);
+  border-right: 0;
+  border-radius: 22px 0 0 22px;
   box-sizing: border-box;
+  box-shadow: 0 24px 58px rgba(18, 63, 98, 0.14);
 }
 
 .home-page .quote-form .customer-type {
@@ -4287,8 +4328,12 @@ textarea:focus-visible {
 .home-page .hero-photo {
   align-self: center;
   width: 100%;
-  height: clamp(420px, 33vw, 456px);
-  min-height: 0;
+  height: var(--home-hero-panel-height);
+  min-height: var(--home-hero-panel-height);
+  margin: 0 0 0 -1px;
+  border-left: 0;
+  border-radius: 0 22px 22px 0;
+  box-shadow: 0 24px 58px rgba(18, 63, 98, 0.14);
 }
 
 .home-page .hero-photo img {
@@ -4360,6 +4405,7 @@ textarea:focus-visible {
 
   .home-page .quote-form {
     height: auto;
+    min-height: 0;
   }
 
   .home-page .hero-photo {
