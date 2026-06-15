@@ -1,4 +1,30 @@
 const customerTypeInputs = document.querySelectorAll('input[name="customerType"]');
+const SITE_CONFIG = {
+  mode: "portfolio"
+};
+const PORTFOLIO_DEMO_MESSAGE = "Questa è una versione dimostrativa del progetto. La richiesta non è stata inviata né salvata.";
+
+loadSiteConfig();
+
+async function loadSiteConfig() {
+  try {
+    const response = await fetch("data/site-config.json");
+    if (!response.ok) return;
+    const config = await response.json();
+    if (config && typeof config.mode === "string") {
+      SITE_CONFIG.mode = config.mode;
+    }
+  } catch {
+    // The portfolio fallback keeps the public demo safe even when opened via file://.
+  }
+}
+
+document.querySelectorAll("img").forEach((image) => {
+  image.decoding = image.decoding || "async";
+  if (!image.closest(".hero, .page-hero, .site-header")) {
+    image.loading = image.loading || "lazy";
+  }
+});
 
 customerTypeInputs.forEach((input) => {
   input.addEventListener("change", () => {
@@ -18,6 +44,55 @@ if (quoteForm) {
   quoteForm.addEventListener("submit", (event) => {
     event.preventDefault();
     window.location.href = quoteForm.getAttribute("action") || "prenota.html";
+  });
+}
+
+const navToggle = document.querySelector(".nav-toggle");
+const mainMenu = document.querySelector(".main-menu");
+
+if (navToggle && mainMenu) {
+  const desktopMenuQuery = window.matchMedia("(min-width: 821px)");
+
+  const closeMainMenu = (returnFocus = false) => {
+    navToggle.classList.remove("is-open");
+    mainMenu.classList.remove("is-open");
+    document.body.classList.remove("nav-menu-open");
+    navToggle.setAttribute("aria-expanded", "false");
+    navToggle.setAttribute("aria-label", "Apri menu principale");
+
+    if (returnFocus) {
+      navToggle.focus();
+    }
+  };
+
+  const openMainMenu = () => {
+    navToggle.classList.add("is-open");
+    mainMenu.classList.add("is-open");
+    document.body.classList.add("nav-menu-open");
+    navToggle.setAttribute("aria-expanded", "true");
+    navToggle.setAttribute("aria-label", "Chiudi menu principale");
+  };
+
+  navToggle.addEventListener("click", () => {
+    if (mainMenu.classList.contains("is-open")) {
+      closeMainMenu();
+    } else {
+      openMainMenu();
+    }
+  });
+
+  mainMenu.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => closeMainMenu());
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && mainMenu.classList.contains("is-open")) {
+      closeMainMenu(true);
+    }
+  });
+
+  desktopMenuQuery.addEventListener?.("change", () => {
+    if (desktopMenuQuery.matches) closeMainMenu();
   });
 }
 
@@ -330,6 +405,14 @@ if (copyMessage && clientMessage) {
 }
 
 async function loadPreventivoConfig() {
+  if (window.location.protocol === "file:") {
+    PREVENTIVO_CONFIG = FALLBACK_PREVENTIVO_CONFIG;
+    SERVICE_CONFIG = buildServiceConfig(PREVENTIVO_CONFIG);
+    applyPreventivoConfigToForm();
+    showServiceQuestions();
+    return;
+  }
+
   try {
     const response = await fetch("data/preventivo-config.json", { cache: "no-store" });
     if (!response.ok) throw new Error("Configurazione preventivo non disponibile");
@@ -558,7 +641,7 @@ async function handleEstimateSubmit(event) {
     return;
   }
 
-  setSubmissionFeedback("Invio richiesta in corso...");
+  setSubmissionFeedback(isPortfolioMode() ? "Preparazione anteprima demo..." : "Invio richiesta in corso...");
 
   try {
     const result = await submitQuoteRequest(technical);
@@ -566,12 +649,14 @@ async function handleEstimateSubmit(event) {
       pdfLink.href = result.pdfLink;
       pdfLink.hidden = false;
     }
-    setSubmissionFeedback(result?.mode === "local"
-      ? "Richiesta preparata in anteprima. Configura GOOGLE_SCRIPT_WEB_APP_URL per salvarla su Google Sheet e inviare le email."
-      : "Richiesta inviata correttamente. Riceverai una conferma e sarai ricontattato per i dettagli.");
+    setSubmissionFeedback(result?.mode === "remote"
+      ? "Richiesta inviata correttamente. Riceverai una conferma e sarai ricontattato per i dettagli."
+      : PORTFOLIO_DEMO_MESSAGE);
   } catch {
-    saveLocalRequest(technical);
-    setSubmissionFeedback("Richiesta preparata. Non riesco a raggiungere l'endpoint configurato: controlla Google Apps Script nel README.");
+    if (!isPortfolioMode()) saveLocalRequest(technical);
+    setSubmissionFeedback(isPortfolioMode()
+      ? PORTFOLIO_DEMO_MESSAGE
+      : "Richiesta preparata in anteprima. Verrai ricontattato dopo la verifica manuale dei dettagli.");
   }
 }
 
@@ -723,6 +808,10 @@ ${request.mandatory_disclaimer}`;
 }
 
 async function submitQuoteRequest(request) {
+  if (isPortfolioMode()) {
+    return { mode: "portfolio" };
+  }
+
   if (!isGoogleScriptConfigured()) {
     saveLocalRequest(request);
     return { mode: "local" };
@@ -753,7 +842,13 @@ function isGoogleScriptConfigured() {
   return GOOGLE_SCRIPT_WEB_APP_URL && GOOGLE_SCRIPT_WEB_APP_URL !== "GOOGLE_SCRIPT_WEB_APP_URL";
 }
 
+function isPortfolioMode() {
+  return SITE_CONFIG.mode === "portfolio";
+}
+
 function saveLocalRequest(request) {
+  if (isPortfolioMode()) return;
+
   try {
     const current = JSON.parse(localStorage.getItem(LOCAL_REQUESTS_KEY) || "[]");
     const withoutDuplicate = current.filter((item) => item.id !== request.id);
@@ -857,6 +952,12 @@ if (adminForm && adminTableBody) {
 
   adminForm.addEventListener("submit", async (event) => {
     event.preventDefault();
+    if (isPortfolioMode()) {
+      renderAdminRequests([]);
+      setAdminFeedback("Versione dimostrativa: l'area admin non è collegata a dati reali.");
+      return;
+    }
+
     const token = new FormData(adminForm).get("adminToken");
     setAdminFeedback("Caricamento richieste...");
 
@@ -866,7 +967,7 @@ if (adminForm && adminTableBody) {
       setAdminFeedback(requests.length ? "Richieste caricate." : "Nessuna richiesta trovata.");
     } catch {
       renderAdminRequests(getLocalRequests());
-      setAdminFeedback("Endpoint admin non configurato o non raggiungibile. Mostro le richieste locali di prova.");
+      setAdminFeedback("Area demo: nessuna richiesta reale disponibile.");
     }
   });
 
@@ -895,6 +996,8 @@ if (adminForm && adminTableBody) {
 }
 
 function getLocalRequests() {
+  if (isPortfolioMode()) return [];
+
   try {
     return JSON.parse(localStorage.getItem(LOCAL_REQUESTS_KEY) || "[]");
   } catch {
@@ -903,6 +1006,10 @@ function getLocalRequests() {
 }
 
 async function loadAdminRequests(token) {
+  if (isPortfolioMode()) {
+    return [];
+  }
+
   if (!isGoogleScriptConfigured()) {
     return getLocalRequests();
   }
@@ -915,6 +1022,11 @@ async function loadAdminRequests(token) {
 }
 
 async function updateRequestStatus(id, status, token) {
+  if (isPortfolioMode()) {
+    setAdminFeedback("Versione dimostrativa: nessuno stato reale è stato modificato.");
+    return;
+  }
+
   const localRequests = getLocalRequests();
   const nextRequests = localRequests.map((request) => request.id === id ? { ...request, status } : request);
   localStorage.setItem(LOCAL_REQUESTS_KEY, JSON.stringify(nextRequests));
@@ -942,7 +1054,9 @@ function renderAdminRequests(requests) {
     const row = document.createElement("tr");
     const cell = document.createElement("td");
     cell.colSpan = 9;
-    cell.textContent = "Nessuna richiesta disponibile. Configura l'endpoint protetto per leggere Google Sheet.";
+    cell.textContent = isPortfolioMode()
+      ? "Versione portfolio: nessuna richiesta reale disponibile nella demo pubblica."
+      : "Nessuna richiesta disponibile.";
     row.appendChild(cell);
     adminTableBody.appendChild(row);
     return;
@@ -969,7 +1083,7 @@ function renderAdminRequests(requests) {
       const link = document.createElement("a");
       link.href = request.pdf_link;
       link.target = "_blank";
-      link.rel = "noopener";
+      link.rel = "noopener noreferrer";
       link.textContent = "PDF";
       pdfCell.appendChild(link);
     } else {

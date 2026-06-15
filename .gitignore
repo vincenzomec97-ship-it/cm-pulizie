@@ -1,0 +1,24 @@
+# Sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor e configurazioni locali
+.vscode/
+.idea/
+
+# Dipendenze e build locali
+node_modules/
+dist/
+build/
+
+# Log e file temporanei
+*.log
+*.tmp
+*.temp
+.codex-*
+
+# Profili browser e report locali
+playwright-report/
+test-results/
+coverage/

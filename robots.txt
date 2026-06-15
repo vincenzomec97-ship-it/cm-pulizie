@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /apps-script/
+
+Sitemap: https://vincenzomec97-ship-it.github.io/cm-pulizie/sitemap.xml
