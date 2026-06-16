@@ -1,0 +1,19 @@
+{
+  "name": "C.M. Pulizie",
+  "short_name": "C.M. Pulizie",
+  "description": "Impresa di pulizie a Napoli e Vomero.",
+  "lang": "it",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5f9fc",
+  "theme_color": "#1c5d91",
+  "icons": [
+    {
+      "src": "assets/img/favicon.png?v=2",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

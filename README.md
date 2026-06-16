@@ -18,6 +18,18 @@ La configurazione della demo e dichiarata in:
 
 File: `data/site-config.json`
 
+La configurazione operativa dei contatti e del modulo si trova in:
+
+```text
+assets/js/config.js
+```
+
+Le istruzioni per passare dalla demo a una versione produzione sono in:
+
+```text
+CONFIG.md
+```
+
 ## Demo sicura
 
 La demo pubblica e navigabile e mostra il comportamento del preventivo dinamico senza inviare dati reali.
@@ -28,6 +40,8 @@ La demo pubblica e navigabile e mostra il comportamento del preventivo dinamico 
 - Nessun PDF con dati personali viene caricato online.
 - Nessuna API privata o credenziale e presente nel frontend.
 - La pagina admin resta una demo grafica e non mostra dati reali.
+- Il piccolo form della home passa i dati alla pagina preventivo tramite `sessionStorage`, senza inserirli nell'URL.
+- Se l'endpoint non e configurato, il modulo non mostra un falso successo e propone il contatto WhatsApp.
 
 Quando il form viene completato, il sito mostra un messaggio chiaro:
 
@@ -177,6 +191,21 @@ Poi apri:
 ```text
 http://localhost:8000/
 ```
+
+## Configurazione contatti e modulo
+
+Per modificare telefono, WhatsApp, email, indirizzo, URL del sito o endpoint del modulo, aggiorna `assets/js/config.js`.
+
+La demo usa:
+
+```js
+mode: "portfolio"
+formEndpoint: ""
+```
+
+Con questa configurazione nessun dato viene inviato o salvato. Per una versione reale bisogna collegare un endpoint sicuro, ad esempio Google Apps Script o un backend serverless, senza inserire credenziali nel codice pubblico.
+
+Il file `CONFIG.md` elenca i dati aziendali e privacy da verificare prima della pubblicazione definitiva.
 
 ## Struttura delle cartelle
 

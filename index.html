@@ -3,24 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>C.M. Pulizie | Home</title>
-  <meta name="description" content="C.M. Pulizie: servizi professionali di pulizia, giardinaggio e manutenzione per privati e aziende." />
+  <title>Impresa di pulizie a Napoli e Vomero | C.M. Pulizie</title>
+  <meta name="description" content="C.M. Pulizie offre servizi per condomini, appartamenti e uffici a Napoli, Vomero e zone limitrofe. Richiedi un preventivo." />
   <link rel="canonical" href="https://vincenzomec97-ship-it.github.io/cm-pulizie/" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="C.M. Pulizie — Progetto web aziendale responsive" />
-  <meta property="og:description" content="Demo portfolio di un sito aziendale con preventivo dinamico, assistente virtuale e interfaccia responsive." />
+  <meta property="og:title" content="Impresa di pulizie a Napoli e Vomero | C.M. Pulizie" />
+  <meta property="og:description" content="Servizi per condomini, appartamenti e uffici a Napoli e Vomero. Preventivi rapidi e interventi curati nei dettagli." />
   <meta property="og:url" content="https://vincenzomec97-ship-it.github.io/cm-pulizie/" />
   <meta property="og:image" content="https://vincenzomec97-ship-it.github.io/cm-pulizie/assets/logo-cm-nuovo.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="C.M. Pulizie — Progetto web aziendale responsive" />
-  <meta name="twitter:description" content="Demo portfolio con preventivo dinamico, assistente virtuale e layout responsive." />
+  <meta name="twitter:title" content="Impresa di pulizie a Napoli e Vomero | C.M. Pulizie" />
+  <meta name="twitter:description" content="Servizi per condomini, appartamenti e uffici a Napoli e Vomero. Richiedi un preventivo." />
   <meta name="twitter:image" content="https://vincenzomec97-ship-it.github.io/cm-pulizie/assets/logo-cm-nuovo.png" />
   <link rel="stylesheet" href="style.css" />
   <link rel="icon" type="image/png" href="assets/img/favicon.png?v=2" />
   <link rel="apple-touch-icon" href="assets/img/favicon.png?v=2" />
+  <link rel="manifest" href="site.webmanifest" />
   <link rel="stylesheet" href="assets/css/chatbot.css" />
 </head>
 <body class="home-page">
+    <a class="skip-link" href="#main-content">Salta al contenuto</a>
   <svg class="svg-sprite" aria-hidden="true" focusable="false">
     <symbol id="icon-location" viewBox="0 0 24 24"><path d="M12 21s7-6.1 7-12a7 7 0 0 0-14 0c0 5.9 7 12 7 12Z" /><circle cx="12" cy="9" r="2.6" /></symbol>
     <symbol id="icon-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m4 7 8 6 8-6" /></symbol>
@@ -61,7 +63,7 @@
     </nav>
   </header>
 
-  <main>
+  <main id="main-content">
     <section class="hero hero-home">
       <div class="hero-inner">
         <div class="brand-block">
@@ -76,14 +78,22 @@
             <p>rispondiamo entro 24 ore</p>
           </div>
           <div class="form-fields">
-            <input id="name" name="name" type="text" placeholder="Nominativo" aria-label="Nominativo" />
-            <input id="email" name="email" type="email" placeholder="Email" aria-label="Email" />
-            <input id="phone" name="phone" type="tel" placeholder="Telefono" aria-label="Telefono" />
+            <label class="sr-only" for="name">Nominativo</label>
+            <input id="name" name="name" type="text" placeholder="Nominativo" autocomplete="name" aria-describedby="homeNameError" required />
+            <span class="field-error" id="homeNameError" aria-live="polite"></span>
+            <label class="sr-only" for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="Email" autocomplete="email" aria-describedby="homeEmailError" required />
+            <span class="field-error" id="homeEmailError" aria-live="polite"></span>
+            <label class="sr-only" for="phone">Telefono</label>
+            <input id="phone" name="phone" type="tel" inputmode="tel" placeholder="Telefono" autocomplete="tel" aria-describedby="homePhoneError" required />
+            <span class="field-error" id="homePhoneError" aria-live="polite"></span>
           </div>
-          <div class="customer-type" role="group" aria-label="Tipo cliente">
+          <div class="customer-type" role="group" aria-label="Tipo cliente" aria-describedby="homeCustomerTypeError">
             <label><input type="checkbox" name="customerType" value="azienda" /><span>Sono un'azienda</span></label>
             <label><input type="checkbox" name="customerType" value="privato" /><span>Sono un privato</span></label>
           </div>
+          <span class="field-error" id="homeCustomerTypeError" aria-live="polite"></span>
+          <p class="form-feedback quote-feedback" id="quoteFeedback" aria-live="polite" hidden></p>
           <button type="submit">Inizia la richiesta</button>
         </form>
 
@@ -242,6 +252,7 @@
     </div>
     <small>&copy; 2026 C.M. Pulizie. Tutti i diritti riservati.</small>
   </footer>
+  <script src="assets/js/config.js"></script>
   <script src="script.js"></script>
   <script src="assets/js/chatbot.js" defer></script>
 </body>

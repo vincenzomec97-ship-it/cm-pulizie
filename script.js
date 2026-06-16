@@ -1,10 +1,36 @@
+const CM_CONFIG = {
+  mode: "portfolio",
+  businessName: "C.M. Pulizie",
+  phoneNumber: "3383861399",
+  secondaryPhoneNumber: "3276623190",
+  whatsappNumber: "393383861399",
+  whatsappMessage: "Ciao, ho visitato il sito C.M. Pulizie e vorrei richiedere informazioni su un servizio.",
+  email: "info@c.m.puliziesrl.it",
+  websiteUrl: "https://vincenzomec97-ship-it.github.io/cm-pulizie/",
+  formEndpoint: "",
+  address: "Via G. Capaldo 7",
+  addressLocality: "Napoli",
+  areaServed: ["Vomero", "Napoli"],
+  vatNumber: "09749501210",
+  operatingHours: {
+    start: "07:00",
+    end: "15:00"
+  },
+  ...(window.CM_CONFIG || {})
+};
+
 const customerTypeInputs = document.querySelectorAll('input[name="customerType"]');
 const SITE_CONFIG = {
-  mode: "portfolio"
+  mode: CM_CONFIG.mode || "portfolio"
 };
-const PORTFOLIO_DEMO_MESSAGE = "Questa è una versione dimostrativa del progetto. La richiesta non è stata inviata né salvata.";
+const PORTFOLIO_DEMO_MESSAGE = "Questa \u00e8 una versione dimostrativa del progetto. La richiesta non \u00e8 stata inviata n\u00e9 salvata.";
+const FORM_NOT_CONNECTED_MESSAGE = "Il modulo non \u00e8 ancora collegato all'invio online. Puoi usare il riepilogo e inviare la richiesta tramite WhatsApp.";
+const QUOTE_PREFILL_KEY = "cmPulizieQuotePrefill";
+const QUOTE_PREFILL_TTL = 1000 * 60 * 60 * 6;
 
 loadSiteConfig();
+applyBusinessConfigToDom();
+injectStructuredData();
 
 async function loadSiteConfig() {
   try {
@@ -17,6 +43,121 @@ async function loadSiteConfig() {
   } catch {
     // The portfolio fallback keeps the public demo safe even when opened via file://.
   }
+}
+
+function applyBusinessConfigToDom() {
+  const email = String(CM_CONFIG.email || "").trim();
+  if (email) {
+    document.querySelectorAll('a[href^="mailto:"]').forEach((link) => {
+      link.href = `mailto:${email}`;
+      if (link.textContent.includes("@")) link.textContent = email;
+      link.setAttribute("aria-label", "Invia email a C.M. Pulizie");
+    });
+  }
+
+  const whatsappUrl = buildWhatsAppUrl(CM_CONFIG.whatsappMessage);
+  if (whatsappUrl) {
+    document.querySelectorAll('a[href*="wa.me"]').forEach((link) => {
+      link.href = whatsappUrl;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+    });
+  }
+}
+
+function injectStructuredData() {
+  const robots = document.querySelector('meta[name="robots"]')?.content || "";
+  if (/noindex/i.test(robots)) return;
+
+  const pageUrl = new URL(window.location.pathname.split("/").pop() || "index.html", CM_CONFIG.websiteUrl || window.location.href).href;
+  const businessData = {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    name: CM_CONFIG.businessName,
+    url: CM_CONFIG.websiteUrl,
+    image: new URL("assets/logo-cm-nuovo.png", CM_CONFIG.websiteUrl || window.location.href).href,
+    telephone: CM_CONFIG.phoneNumber || undefined,
+    email: CM_CONFIG.email || undefined,
+    vatID: CM_CONFIG.vatNumber || undefined,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: CM_CONFIG.address,
+      addressLocality: CM_CONFIG.addressLocality,
+      addressCountry: "IT"
+    },
+    areaServed: Array.isArray(CM_CONFIG.areaServed) ? CM_CONFIG.areaServed : undefined,
+    openingHoursSpecification: CM_CONFIG.operatingHours ? [{
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+      opens: CM_CONFIG.operatingHours.start,
+      closes: CM_CONFIG.operatingHours.end
+    }] : undefined
+  };
+
+  addJsonLd("cm-business-jsonld", removeUndefined(businessData));
+
+  if (!/index\.html$|\/$/.test(pageUrl)) {
+    addJsonLd("cm-breadcrumb-jsonld", {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: new URL("index.html", CM_CONFIG.websiteUrl || window.location.href).href
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: document.title.replace(/\s*\|\s*C\.M\. Pulizie.*$/i, ""),
+          item: pageUrl
+        }
+      ]
+    });
+  }
+
+  const faqItems = Array.from(document.querySelectorAll(".faq-list details")).map((detail) => {
+    const question = detail.querySelector("summary")?.textContent?.trim();
+    const answer = detail.querySelector("p")?.textContent?.trim();
+    if (!question || !answer) return null;
+    return {
+      "@type": "Question",
+      name: question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: answer
+      }
+    };
+  }).filter(Boolean);
+
+  if (faqItems.length) {
+    addJsonLd("cm-faq-jsonld", {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: faqItems
+    });
+  }
+}
+
+function addJsonLd(id, data) {
+  if (document.getElementById(id)) return;
+  const script = document.createElement("script");
+  script.type = "application/ld+json";
+  script.id = id;
+  script.textContent = JSON.stringify(data);
+  document.head.appendChild(script);
+}
+
+function removeUndefined(value) {
+  if (Array.isArray(value)) return value.map(removeUndefined);
+  if (!value || typeof value !== "object") return value;
+
+  return Object.fromEntries(
+    Object.entries(value)
+      .filter(([, entryValue]) => entryValue !== undefined && entryValue !== "")
+      .map(([key, entryValue]) => [key, removeUndefined(entryValue)])
+  );
 }
 
 document.querySelectorAll("img").forEach((image) => {
@@ -41,10 +182,172 @@ customerTypeInputs.forEach((input) => {
 const quoteForm = document.getElementById("quoteForm");
 
 if (quoteForm) {
-  quoteForm.addEventListener("submit", (event) => {
-    event.preventDefault();
+  quoteForm.addEventListener("submit", handleHomeQuoteSubmit);
+}
+
+function handleHomeQuoteSubmit(event) {
+  event.preventDefault();
+
+  if (quoteForm.dataset.submitting === "true") return;
+
+  clearHomeQuoteErrors();
+  const formData = new FormData(quoteForm);
+  const submitButton = quoteForm.querySelector('button[type="submit"]');
+  const customerType = getSelectedCustomerType();
+  const payload = {
+    name: String(formData.get("name") || "").trim(),
+    email: String(formData.get("email") || "").trim(),
+    phone: String(formData.get("phone") || "").trim(),
+    customerType,
+    serviceType: String(formData.get("serviceType") || "").trim()
+  };
+
+  const errors = validateHomeQuotePayload(payload);
+  if (Object.keys(errors).length) {
+    renderHomeQuoteErrors(errors);
+    focusFirstHomeQuoteError(errors);
+    return;
+  }
+
+  saveQuotePrefill(payload);
+  setQuoteFeedback("Perfetto, continuiamo con il modulo completo.", false);
+  quoteForm.dataset.submitting = "true";
+  if (submitButton) {
+    submitButton.disabled = true;
+    submitButton.dataset.originalText = submitButton.textContent;
+    submitButton.textContent = "Apro il preventivo...";
+  }
+
+  window.setTimeout(() => {
     window.location.href = quoteForm.getAttribute("action") || "prenota.html";
-  });
+  }, 220);
+}
+
+function validateHomeQuotePayload(payload) {
+  const errors = {};
+  if (payload.name.length < 2) {
+    errors.name = "Inserisci il nominativo.";
+  }
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payload.email)) {
+    errors.email = "Inserisci un indirizzo email valido.";
+  }
+
+  if (payload.phone.replace(/\D/g, "").length < 8) {
+    errors.phone = "Inserisci un numero di telefono valido.";
+  }
+
+  if (!payload.customerType) {
+    errors.customerType = "Seleziona azienda o privato.";
+  }
+
+  return errors;
+}
+
+function renderHomeQuoteErrors(errors) {
+  setHomeFieldError("name", errors.name);
+  setHomeFieldError("email", errors.email);
+  setHomeFieldError("phone", errors.phone);
+
+  const customerError = document.getElementById("homeCustomerTypeError");
+  if (customerError) customerError.textContent = errors.customerType || "";
+
+  setQuoteFeedback("Controlla i campi evidenziati prima di continuare.", false);
+}
+
+function clearHomeQuoteErrors() {
+  ["name", "email", "phone"].forEach((name) => setHomeFieldError(name, ""));
+  const customerError = document.getElementById("homeCustomerTypeError");
+  if (customerError) customerError.textContent = "";
+  setQuoteFeedback("", true);
+}
+
+function setHomeFieldError(name, message) {
+  const field = quoteForm?.querySelector(`[name="${name}"]`);
+  const error = document.getElementById(`home${name.charAt(0).toUpperCase()}${name.slice(1)}Error`);
+  if (field) field.classList.toggle("is-invalid", Boolean(message));
+  if (error) error.textContent = message || "";
+}
+
+function focusFirstHomeQuoteError(errors) {
+  const firstError = Object.keys(errors)[0];
+  const fieldName = firstError === "customerType" ? "customerType" : firstError;
+  const field = quoteForm?.querySelector(`[name="${fieldName}"]`);
+  field?.focus();
+}
+
+function getSelectedCustomerType() {
+  return quoteForm?.querySelector('input[name="customerType"]:checked')?.value || "";
+}
+
+function setQuoteFeedback(message, hidden) {
+  const feedback = document.getElementById("quoteFeedback");
+  if (!feedback) return;
+  feedback.textContent = message;
+  feedback.hidden = hidden || !message;
+}
+
+function saveQuotePrefill(payload) {
+  const storage = getSessionStorage();
+  if (!storage) return;
+
+  const data = {
+    expiresAt: Date.now() + QUOTE_PREFILL_TTL,
+    data: {
+      nome: payload.name,
+      email: payload.email,
+      telefono: payload.phone,
+      tipo_cliente: payload.customerType,
+      serviceType: payload.serviceType
+    }
+  };
+
+  try {
+    storage.setItem(QUOTE_PREFILL_KEY, JSON.stringify(data));
+  } catch {
+    // If sessionStorage is unavailable, the form still continues normally.
+  }
+}
+
+function readQuotePrefill() {
+  const storage = getSessionStorage();
+  if (!storage) return null;
+
+  try {
+    const saved = JSON.parse(storage.getItem(QUOTE_PREFILL_KEY) || "null");
+    if (!saved || typeof saved !== "object") return null;
+    if (Number(saved.expiresAt || 0) < Date.now()) {
+      removeQuotePrefill();
+      return null;
+    }
+    return saved.data || null;
+  } catch {
+    removeQuotePrefill();
+    return null;
+  }
+}
+
+function removeQuotePrefill() {
+  const storage = getSessionStorage();
+  if (!storage) return;
+
+  try {
+    storage.removeItem(QUOTE_PREFILL_KEY);
+  } catch {
+    // Nothing to clean up when storage is blocked.
+  }
+}
+
+function getSessionStorage() {
+  try {
+    const storage = window.sessionStorage;
+    const testKey = "__cm_pulizie_storage_test__";
+    storage.setItem(testKey, "1");
+    storage.removeItem(testKey);
+    return storage;
+  } catch {
+    return null;
+  }
 }
 
 const navToggle = document.querySelector(".nav-toggle");
@@ -334,6 +637,7 @@ const SERVICE_RULES = {
 const GENERAL_FIELDS = ["nome", "telefono", "email", "zona", "frequenza"];
 const GENERAL_FIELD_LABELS = {
   serviceType: "tipo servizio scelto",
+  tipo_cliente: "tipo cliente",
   nome: "nome",
   telefono: "telefono",
   email: "email",
@@ -358,15 +662,17 @@ const clientMessage = document.getElementById("clientMessage");
 const submissionFeedback = document.getElementById("submissionFeedback");
 const requestSummary = document.getElementById("requestSummary");
 const pdfLink = document.getElementById("pdfLink");
-const GOOGLE_SCRIPT_WEB_APP_URL = "GOOGLE_SCRIPT_WEB_APP_URL";
+const whatsappFallback = document.getElementById("whatsappFallback");
+const GOOGLE_SCRIPT_WEB_APP_URL = String(CM_CONFIG.formEndpoint || "").trim();
 const LOCAL_REQUESTS_KEY = "cmPulizieRequests";
-const BUSINESS_VAT = "09749501210";
+const BUSINESS_VAT = CM_CONFIG.vatNumber || "09749501210";
 const REQUEST_STATUS_NEW = "Nuova";
 const serviceQuestionGroups = new Map();
 
 if (estimateForm && serviceType) {
   initServiceQuestionGroups();
   applyPreventivoConfigToForm();
+  applyHomepagePrefill();
   applyServiceFromUrlParameter();
   loadPreventivoConfig();
   serviceType.addEventListener("change", showServiceQuestions);
@@ -409,6 +715,8 @@ async function loadPreventivoConfig() {
     PREVENTIVO_CONFIG = FALLBACK_PREVENTIVO_CONFIG;
     SERVICE_CONFIG = buildServiceConfig(PREVENTIVO_CONFIG);
     applyPreventivoConfigToForm();
+    applyHomepagePrefill();
+    applyServiceFromUrlParameter();
     showServiceQuestions();
     return;
   }
@@ -421,9 +729,14 @@ async function loadPreventivoConfig() {
     PREVENTIVO_CONFIG = mergePreventivoConfig(externalConfig);
     SERVICE_CONFIG = buildServiceConfig(PREVENTIVO_CONFIG);
     applyPreventivoConfigToForm();
+    applyHomepagePrefill();
+    applyServiceFromUrlParameter();
   } catch {
     PREVENTIVO_CONFIG = FALLBACK_PREVENTIVO_CONFIG;
     SERVICE_CONFIG = buildServiceConfig(PREVENTIVO_CONFIG);
+    applyPreventivoConfigToForm();
+    applyHomepagePrefill();
+    applyServiceFromUrlParameter();
   }
 }
 
@@ -452,6 +765,28 @@ function applyServiceFromUrlParameter() {
 
   serviceType.value = serviceFromUrl;
   showServiceQuestions();
+}
+
+function applyHomepagePrefill() {
+  if (!estimateForm) return;
+
+  const prefill = readQuotePrefill();
+  if (!prefill) return;
+
+  Object.entries({
+    nome: prefill.nome,
+    email: prefill.email,
+    telefono: prefill.telefono,
+    tipo_cliente: prefill.tipo_cliente
+  }).forEach(([name, value]) => {
+    const field = estimateForm.querySelector(`[name="${name}"]`);
+    if (field && value) field.value = value;
+  });
+
+  if (prefill.serviceType && SERVICE_CONFIG[prefill.serviceType] && !getServiceFromUrlParameter()) {
+    serviceType.value = prefill.serviceType;
+    showServiceQuestions();
+  }
 }
 
 function getServiceFromUrlParameter() {
@@ -597,6 +932,7 @@ function showServiceQuestions() {
 
 async function handleEstimateSubmit(event) {
   event.preventDefault();
+  if (estimateForm.dataset.submitting === "true") return;
 
   const formData = new FormData(estimateForm);
   const data = Object.fromEntries(formData.entries());
@@ -642,6 +978,13 @@ async function handleEstimateSubmit(event) {
   }
 
   setSubmissionFeedback(isPortfolioMode() ? "Preparazione anteprima demo..." : "Invio richiesta in corso...");
+  estimateForm.dataset.submitting = "true";
+  const submitButton = estimateForm.querySelector('button[type="submit"]');
+  if (submitButton) {
+    submitButton.disabled = true;
+    submitButton.dataset.originalText = submitButton.textContent;
+    submitButton.textContent = "Preparazione...";
+  }
 
   try {
     const result = await submitQuoteRequest(technical);
@@ -649,14 +992,24 @@ async function handleEstimateSubmit(event) {
       pdfLink.href = result.pdfLink;
       pdfLink.hidden = false;
     }
-    setSubmissionFeedback(result?.mode === "remote"
-      ? "Richiesta inviata correttamente. Riceverai una conferma e sarai ricontattato per i dettagli."
-      : PORTFOLIO_DEMO_MESSAGE);
+    removeQuotePrefill();
+    if (result?.mode === "remote") {
+      setSubmissionFeedback("Richiesta inviata correttamente. Riceverai una conferma e sarai ricontattato per i dettagli.");
+    } else if (result?.mode === "not_configured") {
+      setSubmissionFeedback(FORM_NOT_CONNECTED_MESSAGE);
+    } else {
+      setSubmissionFeedback(PORTFOLIO_DEMO_MESSAGE);
+    }
   } catch {
-    if (!isPortfolioMode()) saveLocalRequest(technical);
     setSubmissionFeedback(isPortfolioMode()
       ? PORTFOLIO_DEMO_MESSAGE
-      : "Richiesta preparata in anteprima. Verrai ricontattato dopo la verifica manuale dei dettagli.");
+      : "Non siamo riusciti a completare l'invio online. Puoi usare il riepilogo e inviarlo tramite WhatsApp.");
+  } finally {
+    estimateForm.dataset.submitting = "false";
+    if (submitButton) {
+      submitButton.disabled = false;
+      submitButton.textContent = submitButton.dataset.originalText || "Richiedi preventivo";
+    }
   }
 }
 
@@ -673,6 +1026,7 @@ function renderEstimate({ data, service, missing, collected, range, message, tec
     pdfLink.hidden = true;
     pdfLink.removeAttribute("href");
   }
+  updateWhatsAppFallbackLink(message);
 
   renderList(document.getElementById("collectedOutput"), collected.map((item) => `${item.label}: ${item.value}`));
   renderList(
@@ -686,6 +1040,20 @@ function renderEstimate({ data, service, missing, collected, range, message, tec
     output.hidden = false;
     output.scrollIntoView({ behavior: "smooth", block: "start" });
   }
+}
+
+function updateWhatsAppFallbackLink(message) {
+  if (!whatsappFallback) return;
+
+  const url = buildWhatsAppUrl(message);
+  if (!url) {
+    whatsappFallback.hidden = true;
+    whatsappFallback.removeAttribute("href");
+    return;
+  }
+
+  whatsappFallback.href = url;
+  whatsappFallback.hidden = false;
 }
 
 function buildClientMessage({ data, service, missing, range, requestId }) {
@@ -736,6 +1104,7 @@ function buildTechnicalJson({ data, service, missing, range, collected, requestI
     status: REQUEST_STATUS_NEW,
     service_key: data.serviceType || null,
     service_type: service ? service.label : null,
+    tipo_cliente: data.tipo_cliente || null,
     zona: data.zona || null,
     nome: data.nome || null,
     telefono: data.telefono || null,
@@ -762,7 +1131,7 @@ function buildTechnicalJson({ data, service, missing, range, collected, requestI
 
 function collectFilledData(data, service) {
   const activeQuestionFields = Array.from(estimateForm.querySelectorAll('.question-group:not([hidden]) [name]')).map((field) => field.name);
-  const fieldNames = ["serviceType", ...GENERAL_FIELDS, "data_preferita", "orario", "note", ...activeQuestionFields];
+  const fieldNames = ["serviceType", "tipo_cliente", ...GENERAL_FIELDS, "data_preferita", "orario", "note", ...activeQuestionFields];
 
   return [...new Set(fieldNames)]
     .filter((name) => isFilled(data[name]))
@@ -813,8 +1182,7 @@ async function submitQuoteRequest(request) {
   }
 
   if (!isGoogleScriptConfigured()) {
-    saveLocalRequest(request);
-    return { mode: "local" };
+    return { mode: "not_configured" };
   }
 
   const response = await fetch(GOOGLE_SCRIPT_WEB_APP_URL, {
@@ -839,7 +1207,7 @@ async function submitQuoteRequest(request) {
 }
 
 function isGoogleScriptConfigured() {
-  return GOOGLE_SCRIPT_WEB_APP_URL && GOOGLE_SCRIPT_WEB_APP_URL !== "GOOGLE_SCRIPT_WEB_APP_URL";
+  return Boolean(GOOGLE_SCRIPT_WEB_APP_URL);
 }
 
 function isPortfolioMode() {
@@ -847,7 +1215,7 @@ function isPortfolioMode() {
 }
 
 function saveLocalRequest(request) {
-  if (isPortfolioMode()) return;
+  if (isPortfolioMode() || !CM_CONFIG.enableLocalRequestStorage) return;
 
   try {
     const current = JSON.parse(localStorage.getItem(LOCAL_REQUESTS_KEY) || "[]");
@@ -906,6 +1274,20 @@ function numberValue(value) {
   return Number(String(value || "0").replace(",", ".")) || 0;
 }
 
+function normalizePhoneForWhatsApp(value) {
+  const digits = String(value || "").replace(/\D/g, "");
+  if (!digits) return "";
+  return digits.startsWith("39") ? digits : `39${digits}`;
+}
+
+function buildWhatsAppUrl(message) {
+  const phone = normalizePhoneForWhatsApp(CM_CONFIG.whatsappNumber || CM_CONFIG.phoneNumber);
+  if (!phone) return "";
+
+  const text = encodeURIComponent(message || CM_CONFIG.whatsappMessage || "Ciao, vorrei ricevere informazioni da C.M. Pulizie.");
+  return `https://wa.me/${phone}?text=${text}`;
+}
+
 function numberFromText(value) {
   const match = String(value || "").replace(",", ".").match(/\d+(\.\d+)?/);
   return match ? Number(match[0]) : 0;
@@ -954,7 +1336,7 @@ if (adminForm && adminTableBody) {
     event.preventDefault();
     if (isPortfolioMode()) {
       renderAdminRequests([]);
-      setAdminFeedback("Versione dimostrativa: l'area admin non è collegata a dati reali.");
+      setAdminFeedback("Versione dimostrativa: l'area admin non Ã¨ collegata a dati reali.");
       return;
     }
 
@@ -1023,7 +1405,7 @@ async function loadAdminRequests(token) {
 
 async function updateRequestStatus(id, status, token) {
   if (isPortfolioMode()) {
-    setAdminFeedback("Versione dimostrativa: nessuno stato reale è stato modificato.");
+    setAdminFeedback("Versione dimostrativa: nessuno stato reale Ã¨ stato modificato.");
     return;
   }
 
