@@ -159,22 +159,29 @@ a {
   fill: currentColor;
 }
 
-.social-list .facebook-link {
-  color: #1877f2;
-}
-
-.social-list .whatsapp-link {
-  color: #25d366;
-}
-
+.social-list .facebook-link,
+.social-list .whatsapp-link,
 .social-list .yellow-pages-link {
   color: var(--blue);
+}
+
+.social-list a:hover,
+.social-list a:focus-visible {
+  color: var(--light-blue);
 }
 
 .social-icon-pagine-gialle {
   width: 29px;
   height: 29px;
   border-radius: 7px;
+}
+
+.social-icon-pagine-gialle rect {
+  fill: none;
+}
+
+.social-icon-pagine-gialle path {
+  fill: currentColor;
 }
 
 .main-menu {
