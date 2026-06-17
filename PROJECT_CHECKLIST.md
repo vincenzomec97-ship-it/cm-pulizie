@@ -6,7 +6,7 @@
 - [x] Chatbot verificato
 - [x] WhatsApp verificato
 - [x] Contatori verificati
-- [x] Recensioni dimostrative invariate nelle card
+- [x] Recensioni dimostrative rimosse e sostituite da collegamento Google ufficiale
 - [x] Nessun dato inviato in modalita portfolio
 - [x] Nessuna credenziale pubblica
 - [x] Nessun errore console

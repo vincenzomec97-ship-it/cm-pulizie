@@ -6,7 +6,7 @@
 
   const CONFIG_URL = "data/chatbot-config.json";
   const EMERGENCY_MESSAGE = "Al momento alcune risposte automatiche non sono disponibili. Puoi usare il modulo preventivo o contattare CM Pulizie su WhatsApp.";
-  const DEFAULT_WHATSAPP_MESSAGE = "Ciao, ho visitato il sito CM Pulizie e avrei bisogno di informazioni su un servizio.";
+  const DEFAULT_WHATSAPP_MESSAGE = "Buongiorno, vorrei ricevere informazioni sui servizi di C.M. Pulizie.";
   const SIGNIFICANT_SINGLE_WORDS = new Set([
     "appartamento",
     "appartamenti",

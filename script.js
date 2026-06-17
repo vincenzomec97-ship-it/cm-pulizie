@@ -4,10 +4,15 @@ const CM_CONFIG = {
   phoneNumber: "3383861399",
   secondaryPhoneNumber: "3276623190",
   whatsappNumber: "393383861399",
-  whatsappMessage: "Ciao, ho visitato il sito C.M. Pulizie e vorrei richiedere informazioni su un servizio.",
+  whatsappMessage: "Buongiorno, vorrei ricevere informazioni sui servizi di C.M. Pulizie.",
   email: "info@c.m.puliziesrl.it",
   websiteUrl: "https://vincenzomec97-ship-it.github.io/cm-pulizie/",
   formEndpoint: "",
+  googleMapsUrl: "https://maps.app.goo.gl/mdHLhVkuGk9x565KA?g_st=ic",
+  googleReviewsUrl: "https://share.google/IhgWBgoqe21N4Gkul",
+  facebookUrl: "https://www.facebook.com/share/1avRifo9CY/?mibextid=wwXIfr",
+  yellowPagesUrl: "https://share.google/8ZzKNl85I47vZyRSR",
+  googleBusinessUrl: "https://maps.app.goo.gl/mdHLhVkuGk9x565KA?g_st=ic",
   address: "Via G. Capaldo 7",
   addressLocality: "Napoli",
   areaServed: ["Vomero", "Napoli"],
@@ -63,6 +68,45 @@ function applyBusinessConfigToDom() {
       link.rel = "noopener noreferrer";
     });
   }
+
+  const mapsUrl = String(CM_CONFIG.googleMapsUrl || CM_CONFIG.googleBusinessUrl || "").trim();
+  if (mapsUrl) {
+    document.querySelectorAll('a[href*="google.com/maps"], a[href*="maps.app.goo.gl"]').forEach((link) => {
+      link.href = mapsUrl;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      if (!link.getAttribute("aria-label")) {
+        link.setAttribute("aria-label", "Apri la scheda ufficiale C.M. Pulizie su Google Maps");
+      }
+    });
+  }
+
+  const facebookUrl = String(CM_CONFIG.facebookUrl || "").trim();
+  if (facebookUrl) {
+    document.querySelectorAll('a[href*="facebook.com"]').forEach((link) => {
+      link.href = facebookUrl;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+    });
+  }
+
+  const reviewsUrl = String(CM_CONFIG.googleReviewsUrl || "").trim();
+  if (reviewsUrl) {
+    document.querySelectorAll('a[data-google-reviews-link]').forEach((link) => {
+      link.href = reviewsUrl;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+    });
+  }
+
+  const yellowPagesUrl = String(CM_CONFIG.yellowPagesUrl || "").trim();
+  if (yellowPagesUrl) {
+    document.querySelectorAll('a[data-yellow-pages-link]').forEach((link) => {
+      link.href = yellowPagesUrl;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+    });
+  }
 }
 
 function injectStructuredData() {
@@ -86,6 +130,10 @@ function injectStructuredData() {
       addressCountry: "IT"
     },
     areaServed: Array.isArray(CM_CONFIG.areaServed) ? CM_CONFIG.areaServed : undefined,
+    sameAs: [
+      CM_CONFIG.facebookUrl,
+      CM_CONFIG.yellowPagesUrl
+    ].filter(Boolean),
     openingHoursSpecification: CM_CONFIG.operatingHours ? [{
       "@type": "OpeningHoursSpecification",
       dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],

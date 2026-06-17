@@ -140,21 +140,41 @@ a {
 .social-list a {
   display: inline-grid;
   place-items: center;
-  min-width: 30px;
-  height: 30px;
+  min-width: 44px;
+  height: 44px;
+  border-radius: 999px;
   color: var(--blue);
   text-decoration: none;
   font-size: 19px;
   font-weight: 900;
   letter-spacing: 0;
   line-height: 1;
+  transition: color 160ms ease, transform 160ms ease, background 160ms ease;
 }
 
 .social-icon {
   display: block;
-  width: 28px;
-  height: 28px;
+  width: 25px;
+  height: 25px;
   fill: currentColor;
+}
+
+.social-list .facebook-link {
+  color: #1877f2;
+}
+
+.social-list .whatsapp-link {
+  color: #25d366;
+}
+
+.social-list .yellow-pages-link {
+  color: var(--blue);
+}
+
+.social-icon-pagine-gialle {
+  width: 29px;
+  height: 29px;
+  border-radius: 7px;
 }
 
 .main-menu {
@@ -1426,21 +1446,20 @@ body {
 }
 
 .social-list a {
-  min-width: 28px;
-  height: 28px;
+  min-width: 44px;
+  height: 44px;
   color: var(--blue);
   transition: color 160ms ease, transform 160ms ease;
 }
 
 .social-list a:hover,
 .social-list a:focus-visible {
-  color: var(--cyan);
   transform: translateY(-1px);
 }
 
 .social-icon {
-  width: 23px;
-  height: 23px;
+  width: 25px;
+  height: 25px;
 }
 
 .main-menu {
@@ -2636,6 +2655,10 @@ body {
   border-radius: 18px;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(239, 249, 255, 0.92));
   box-shadow: var(--shadow-soft);
+}
+
+.google-review-panel-single {
+  max-width: 920px;
 }
 
 .google-review-intro {

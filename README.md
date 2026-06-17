@@ -38,7 +38,7 @@ Il sito doveva:
 - Home aziendale con hero, immagine principale, form iniziale e call to action.
 - Pagina servizi con card, descrizioni e immagini.
 - Contatori animati e micro-animazioni leggere.
-- Recensioni dimostrative per mostrare il layout della sezione.
+- Collegamento alle recensioni Google ufficiali senza testi o rating inventati.
 - Preventivo dinamico con campi specifici per servizio.
 - Assistente virtuale con risposte controllate.
 - Pulsanti WhatsApp.
@@ -131,9 +131,9 @@ Quando il form viene completato in modalita portfolio, il sito mostra:
 
 > Questa e una versione dimostrativa del progetto. La richiesta non e stata inviata ne salvata.
 
-## Recensioni dimostrative
+## Recensioni Google
 
-Le recensioni presenti nella demo sono contenuti dimostrativi utilizzati per mostrare il layout della sezione. Non vengono presentate come recensioni Google o recensioni verificate.
+La sezione recensioni non contiene testi inventati, stelle o valutazioni non verificate. Il sito rimanda al profilo Google ufficiale tramite il collegamento configurato nel progetto.
 
 ## Screenshot
 

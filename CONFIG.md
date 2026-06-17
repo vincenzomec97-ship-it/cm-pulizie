@@ -15,6 +15,10 @@ Aggiorna questi valori quando il sito passa da demo portfolio a produzione:
 - `email`: email aziendale.
 - `websiteUrl`: URL pubblico definitivo.
 - `formEndpoint`: endpoint sicuro per ricevere richieste dal modulo.
+- `googleMapsUrl`: scheda ufficiale Google Maps.
+- `googleReviewsUrl`: collegamento ufficiale alle recensioni Google.
+- `facebookUrl`: pagina Facebook ufficiale.
+- `yellowPagesUrl`: collegamento Pagine Gialle fornito dall'azienda.
 - `googleBusinessUrl`: profilo Google dell'attivita, se disponibile.
 - `address`: indirizzo.
 - `addressLocality`: citta.
@@ -49,6 +53,6 @@ Prima della pubblicazione reale verificare:
 
 ## Recensioni e statistiche
 
-Le recensioni e i numeri presenti nella demo servono a mostrare il layout. In produzione vanno sostituiti solo con dati verificabili.
+La sezione recensioni deve rimandare al profilo Google ufficiale e non deve contenere recensioni inventate, stelle o valutazioni non verificabili.
 
-Non aggiungere rating, stelle aggregate o recensioni nei dati strutturati SEO se non sono reali e verificabili.
+Le statistiche pubbliche vanno mostrate solo quando sono reali e verificabili. Non aggiungere rating, stelle aggregate o recensioni nei dati strutturati SEO se non sono reali e aggiornabili.
