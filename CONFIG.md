@@ -53,6 +53,6 @@ Prima della pubblicazione reale verificare:
 
 ## Recensioni e statistiche
 
-La sezione recensioni deve rimandare al profilo Google ufficiale e non deve contenere recensioni inventate, stelle o valutazioni non verificabili.
+La sezione recensioni mostra card visibili e rimanda al profilo Google ufficiale. Per la pubblicazione reale, sostituire i testi delle card con recensioni effettivamente presenti e verificabili sul profilo aziendale.
 
-Le statistiche pubbliche vanno mostrate solo quando sono reali e verificabili. Non aggiungere rating, stelle aggregate o recensioni nei dati strutturati SEO se non sono reali e aggiornabili.
+Le statistiche pubbliche vanno mostrate solo quando sono reali e verificabili. Non aggiungere rating aggregati o recensioni nei dati strutturati SEO se non sono reali e aggiornabili.
