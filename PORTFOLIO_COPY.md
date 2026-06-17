@@ -2,7 +2,7 @@
 
 ## 1. Descrizione brevissima
 
-Sito aziendale responsive con preventivo dinamico, chatbot controllato e modalita demo sicura per portfolio.
+Sito aziendale responsive con preventivo dinamico, chatbot controllato e demo sicura per portfolio.
 
 ## 2. Descrizione breve
 

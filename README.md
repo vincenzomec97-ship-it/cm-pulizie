@@ -1,4 +1,4 @@
-# C.M. Pulizie — Sito aziendale responsive
+# C.M. Pulizie - Sito aziendale responsive
 
 [Visualizza la demo online](https://vincenzomec97-ship-it.github.io/cm-pulizie/)
 
@@ -8,7 +8,7 @@ Progetto frontend realizzato per presentare i servizi di un'impresa di pulizie e
 
 Il progetto e pubblicato in modalita portfolio. Le integrazioni con database, email, PDF e account aziendali sono predisposte concettualmente, ma non sono attive nella demo pubblica.
 
-La configurazione della demo e dichiarata in:
+La modalita portfolio e dichiarata in:
 
 ```json
 {
@@ -16,53 +16,35 @@ La configurazione della demo e dichiarata in:
 }
 ```
 
-File: `data/site-config.json`
+File principali di configurazione:
 
-La configurazione operativa dei contatti e del modulo si trova in:
-
-```text
-assets/js/config.js
-```
-
-Le istruzioni per passare dalla demo a una versione produzione sono in:
-
-```text
-CONFIG.md
-```
-
-## Demo sicura
-
-La demo pubblica e navigabile e mostra il comportamento del preventivo dinamico senza inviare dati reali.
-
-- Nessun dato personale viene inviato.
-- Nessuna richiesta viene salvata in database.
-- Nessuna email automatica viene inviata.
-- Nessun PDF con dati personali viene caricato online.
-- Nessuna API privata o credenziale e presente nel frontend.
-- La pagina admin resta una demo grafica e non mostra dati reali.
-- Il piccolo form della home passa i dati alla pagina preventivo tramite `sessionStorage`, senza inserirli nell'URL.
-- Se l'endpoint non e configurato, il modulo non mostra un falso successo e propone il contatto WhatsApp.
-
-Quando il form viene completato, il sito mostra un messaggio chiaro:
-
-> Questa e una versione dimostrativa del progetto. La richiesta non e stata inviata ne salvata.
+- `data/site-config.json`
+- `assets/js/config.js`
+- `CONFIG.md`
 
 ## Problema affrontato
 
-Il sito doveva presentare diversi servizi in modo semplice, funzionare bene da smartphone e guidare l'utente verso una richiesta di preventivo o un contatto WhatsApp. Una parte importante del progetto era evitare un modulo generico: condomini, appartamenti, uffici e servizi specialistici richiedono dati diversi.
+Il sito doveva:
+
+- presentare diversi servizi in modo semplice;
+- funzionare bene da smartphone;
+- aiutare il cliente a scegliere il servizio corretto;
+- raccogliere dati diversi per uffici, condomini, appartamenti e altri interventi;
+- portare il cliente verso il preventivo o WhatsApp;
+- mantenere uno stile aziendale professionale.
 
 ## Soluzione realizzata
 
-- Homepage aziendale con hero, form iniziale e call to action.
-- Pagina servizi con card informative e immagini.
-- Sezioni con contatori animati e micro-animazioni leggere.
+- Home aziendale con hero, immagine principale, form iniziale e call to action.
+- Pagina servizi con card, descrizioni e immagini.
+- Contatori animati e micro-animazioni leggere.
 - Recensioni dimostrative per mostrare il layout della sezione.
 - Preventivo dinamico con campi specifici per servizio.
-- Assistente virtuale deterministico con FAQ controllate.
-- Integrazione WhatsApp tramite link diretto.
-- Layout responsive per desktop, tablet e smartphone.
-- Accessibilita di base e SEO tecnica per una demo pubblica.
-- Modalita portfolio sicura senza backend attivo.
+- Assistente virtuale con risposte controllate.
+- Pulsanti WhatsApp.
+- Responsive design per desktop, tablet e smartphone.
+- Accessibilita di base e SEO tecnica.
+- Modalita demo sicura per portfolio.
 
 ## Funzionalita principali
 
@@ -73,15 +55,15 @@ Il sito doveva presentare diversi servizi in modo semplice, funzionare bene da s
 5. Riepilogo della stima.
 6. Chatbot con FAQ controllate.
 7. Pulsanti WhatsApp.
-8. Animazioni leggere allo scroll.
-9. Gestione degli errori lato frontend.
+8. Animazioni leggere.
+9. Gestione degli errori.
 10. Privacy e modalita demo.
 11. Pagina 404.
-12. SEO tecnica di base.
+12. SEO tecnica.
 
 ## Preventivo dinamico
 
-Il preventivo non e un semplice modulo generico. Il modulo cambia in base al servizio scelto:
+Il preventivo non e un modulo generico. Il modulo cambia in base al servizio scelto:
 
 - Pulizie condomini.
 - Pulizie appartamenti.
@@ -101,9 +83,8 @@ Il chatbot:
 - non inventa prezzi;
 - non conferma appuntamenti;
 - indirizza verso preventivo e WhatsApp;
-- non salva conversazioni;
-- non raccoglie dati personali;
-- funziona in modo sicuro in un progetto statico.
+- funziona in modo sicuro in un progetto statico;
+- non salva conversazioni o dati personali.
 
 ## Tecnologie utilizzate
 
@@ -115,22 +96,40 @@ Il chatbot:
 
 ## Responsive design
 
-Il sito e stato verificato su smartphone, tablet, desktop, dispositivi touch e orientamenti verticale/orizzontale. Le card, le immagini, il form preventivo, il menu mobile e il chatbot sono stati controllati per evitare sovrapposizioni e scorrimento orizzontale.
+Il sito e stato verificato per smartphone, tablet, desktop, dispositivi touch e orientamenti verticale/orizzontale. Le card, le immagini, il form preventivo, il menu mobile, il chatbot e il footer sono stati controllati per evitare sovrapposizioni e scorrimento orizzontale.
 
 ## Accessibilita
 
 Nel progetto sono presenti:
 
 - lingua italiana nel tag `html`;
-- testi alternativi per le immagini;
-- label associate ai campi;
-- aria-label sui controlli principali;
-- aria-expanded sul menu mobile e sulla chat;
+- navigazione da tastiera;
 - focus visibile;
-- supporto tastiera per menu e chatbot;
-- rispetto di `prefers-reduced-motion`.
+- `aria-label` sui controlli principali;
+- `aria-expanded` su menu mobile e chat;
+- testi alternativi per le immagini;
+- contrasto leggibile;
+- rispetto di `prefers-reduced-motion`;
+- campi modulo con label.
 
 Non viene dichiarata una conformita WCAG completa, ma il progetto include attenzioni concrete per rendere l'esperienza piu accessibile.
+
+## Sicurezza della demo
+
+La demo pubblica e navigabile e mostra il comportamento del preventivo dinamico senza inviare dati reali.
+
+- Nessun dato personale viene inviato.
+- Nessuna richiesta viene salvata in database.
+- Nessuna email automatica viene inviata.
+- Nessun PDF con dati personali viene caricato online.
+- Nessuna API privata o credenziale e presente nel frontend.
+- Nessuna conversazione della chat viene salvata.
+- Nessun analytics e attivo.
+- La pagina admin resta una demo grafica e non mostra dati reali.
+
+Quando il form viene completato in modalita portfolio, il sito mostra:
+
+> Questa e una versione dimostrativa del progetto. La richiesta non e stata inviata ne salvata.
 
 ## Recensioni dimostrative
 
@@ -138,7 +137,7 @@ Le recensioni presenti nella demo sono contenuti dimostrativi utilizzati per mos
 
 ## Screenshot
 
-Gli screenshot reali della demo, se presenti, sono in `docs/screenshots/`.
+Gli screenshot reali della demo sono in `docs/screenshots/`.
 
 - `home-desktop.png`
 - `home-mobile.png`
@@ -161,7 +160,7 @@ Dimensioni consigliate per nuove acquisizioni:
 
 ## Evoluzione futura
 
-Il progetto puo essere trasformato in una versione produzione collegando:
+Il progetto puo essere collegato in futuro a:
 
 - dominio aziendale;
 - email professionali;
@@ -174,7 +173,7 @@ Il progetto puo essere trasformato in una versione produzione collegando:
 - PDF preventivi;
 - area amministrativa protetta;
 - recensioni reali;
-- Analytics dopo configurazione privacy.
+- Analytics, dopo configurazione privacy.
 
 Queste integrazioni non sono attive nella demo pubblica.
 
@@ -191,6 +190,8 @@ Poi apri:
 ```text
 http://localhost:8000/
 ```
+
+Node non e necessario per pubblicare o visualizzare il sito.
 
 ## Configurazione contatti e modulo
 
@@ -211,27 +212,27 @@ Il file `CONFIG.md` elenca i dati aziendali e privacy da verificare prima della 
 
 ```text
 .
-├── assets/
-│   ├── css/
-│   ├── img/
-│   └── js/
-├── apps-script/
-├── data/
-├── docs/
-│   └── screenshots/
-├── index.html
-├── servizi.html
-├── chi-siamo.html
-├── prenota.html
-├── candidati.html
-├── aiuto.html
-├── privacy.html
-├── admin.html
-├── 404.html
-├── style.css
-├── script.js
-├── robots.txt
-└── sitemap.xml
+|-- assets/
+|   |-- css/
+|   |-- img/
+|   `-- js/
+|-- apps-script/
+|-- data/
+|-- docs/
+|   `-- screenshots/
+|-- index.html
+|-- servizi.html
+|-- chi-siamo.html
+|-- prenota.html
+|-- candidati.html
+|-- aiuto.html
+|-- privacy.html
+|-- admin.html
+|-- 404.html
+|-- style.css
+|-- script.js
+|-- robots.txt
+`-- sitemap.xml
 ```
 
 ## File principali
@@ -246,6 +247,7 @@ Il file `CONFIG.md` elenca i dati aziendali e privacy da verificare prima della 
 - `admin.html` - demo grafica area richieste, noindex.
 - `script.js` - animazioni, preventivo dinamico, modalita portfolio e admin demo.
 - `assets/js/chatbot.js` - assistente virtuale controllato.
+- `assets/js/config.js` - configurazione contatti, modalita e URL.
 - `data/chatbot-config.json` - FAQ e risposte del chatbot.
 - `data/preventivo-config.json` - configurazione dei servizi.
 - `data/site-config.json` - modalita portfolio.
@@ -256,7 +258,7 @@ Il file `apps-script/Code.gs` resta come traccia tecnica per una futura integraz
 
 - URL Web App Google Apps Script;
 - email reale del titolare;
-- token admin salvato in Script Properties;
+- token admin salvato in Script Properties o in un sistema sicuro;
 - informativa privacy definitiva;
 - protezione reale dell'area admin.
 

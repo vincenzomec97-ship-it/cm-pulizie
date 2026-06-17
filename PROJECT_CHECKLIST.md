@@ -10,7 +10,7 @@
 - [x] Nessun dato inviato in modalita portfolio
 - [x] Nessuna credenziale pubblica
 - [x] Nessun errore console
-- [x] Nessun link rotto
+- [x] Nessun link rotto interno evidente
 - [x] Nessuno scorrimento orizzontale
 - [x] Favicon presente
 - [x] Pagina 404 presente
@@ -22,7 +22,7 @@
 - [x] Test tablet
 - [x] Test desktop
 - [x] Screenshot portfolio
-- [ ] Link demo verificato
+- [ ] Link demo verificato online dopo pubblicazione GitHub Pages
 
 ## Note
 

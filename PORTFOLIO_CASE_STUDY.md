@@ -1,4 +1,4 @@
-# C.M. Pulizie — Case Study Portfolio
+# C.M. Pulizie - Case Study Portfolio
 
 ## 1. Panoramica
 
@@ -23,9 +23,9 @@ Il sito e pensato per privati, amministratori condominiali, uffici e piccole att
 
 ## 5. Scelte di design
 
-Il design usa una palette coerente con il brand: blu, azzurro, giallo e grigi chiari. Le sezioni sono ariose, le card hanno bordi arrotondati e ombre leggere, le immagini vengono valorizzate senza appesantire l'interfaccia.
+Il design mantiene la palette gia presente nel sito: blu, azzurro, giallo e grigi chiari. Le sezioni sono ariose, le card hanno bordi arrotondati e ombre leggere, le immagini vengono valorizzate senza appesantire l'interfaccia.
 
-L'obiettivo visivo e stato mantenere un tono aziendale, pulito e umano.
+L'obiettivo visivo e mantenere un tono aziendale, pulito e umano, senza trasformare il progetto in un template generico.
 
 ## 6. Architettura delle pagine
 
@@ -94,7 +94,7 @@ Questa scelta consente di presentare il progetto online senza attivare backend, 
 
 ## 13. Soluzioni adottate
 
-- JavaScript modulare per campi dinamici e riepilogo.
+- JavaScript per campi dinamici, riepilogo e validazione.
 - Configurazioni JSON per preventivo e chatbot.
 - CSS responsive con grid, flexbox e dimensioni fluide.
 - Modalita portfolio con messaggio demo professionale.
