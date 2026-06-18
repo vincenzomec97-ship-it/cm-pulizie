@@ -2748,7 +2748,7 @@ body {
 }
 
 .google-style-reviews {
-  grid-template-columns: repeat(2, minmax(300px, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   max-width: 1040px;
   margin: 0 auto;
 }
@@ -2819,6 +2819,29 @@ body {
   color: #5f6f7b;
   font-size: 15.5px;
   line-height: 1.55;
+}
+
+.demo-review-badge {
+  width: fit-content;
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: var(--blue);
+  background: rgba(244, 197, 66, 0.24);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.google-read-link {
+  align-self: end;
+  color: var(--blue);
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.google-read-link:hover,
+.google-read-link:focus-visible {
+  color: var(--light-blue);
+  text-decoration: underline;
 }
 
 .initial-avatar {
