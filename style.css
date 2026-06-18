@@ -2767,14 +2767,14 @@ body {
 .google-review-head {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
-  gap: 12px;
-  align-items: start;
+  gap: 14px;
+  align-items: center;
   padding-right: 42px;
 }
 
 .google-review-head .initial-avatar {
-  width: 48px;
-  height: 48px;
+  width: 56px;
+  height: 56px;
   font-size: 20px;
 }
 
@@ -2847,14 +2847,16 @@ body {
 .initial-avatar {
   display: grid;
   place-items: center;
-  width: 70px;
-  height: 70px;
+  width: 56px;
+  height: 56px;
   border: 2px solid var(--cyan);
   border-radius: 50%;
   color: var(--white);
   background: linear-gradient(135deg, var(--blue), var(--cyan));
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 900;
+  line-height: 1;
+  text-align: center;
 }
 
 .final-cta,
