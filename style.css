@@ -140,6 +140,7 @@ a {
 .social-list a {
   display: inline-grid;
   place-items: center;
+  width: 44px;
   min-width: 44px;
   height: 44px;
   border-radius: 999px;
@@ -154,9 +155,14 @@ a {
 
 .social-icon {
   display: block;
-  width: 25px;
-  height: 25px;
+  width: 22px;
+  height: 22px;
   fill: currentColor;
+}
+
+.social-icon-whatsapp {
+  width: 20px;
+  height: 20px;
 }
 
 .social-list .facebook-link,
@@ -171,8 +177,8 @@ a {
 }
 
 .social-icon-pagine-gialle {
-  width: 29px;
-  height: 29px;
+  width: 22px;
+  height: 22px;
   border-radius: 7px;
 }
 
@@ -1453,6 +1459,7 @@ body {
 }
 
 .social-list a {
+  width: 44px;
   min-width: 44px;
   height: 44px;
   color: var(--blue);
@@ -1465,8 +1472,13 @@ body {
 }
 
 .social-icon {
-  width: 25px;
-  height: 25px;
+  width: 22px;
+  height: 22px;
+}
+
+.social-icon-whatsapp {
+  width: 20px;
+  height: 20px;
 }
 
 .main-menu {
@@ -2138,6 +2150,11 @@ body {
     height: 22px;
   }
 
+  .social-icon-whatsapp {
+    width: 20px;
+    height: 20px;
+  }
+
   .main-menu {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -2781,9 +2798,12 @@ body {
 }
 
 .google-review-head .initial-avatar {
-  width: 56px;
-  height: 56px;
-  font-size: 28px;
+  width: 60px;
+  height: 60px;
+  margin: 0;
+  color: var(--white);
+  font-size: 34px;
+  line-height: 1;
 }
 
 .google-review-head strong {
@@ -2795,7 +2815,7 @@ body {
   overflow-wrap: anywhere;
 }
 
-.google-review-head span:not(.google-mini) {
+.google-review-head span:not(.google-mini):not(.initial-avatar) {
   display: block;
   margin-top: 3px;
   color: var(--grey);
@@ -2845,13 +2865,13 @@ body {
 .initial-avatar {
   display: grid;
   place-items: center;
-  width: 56px;
-  height: 56px;
+  width: 60px;
+  height: 60px;
   border: 2px solid var(--cyan);
   border-radius: 50%;
   color: var(--white);
   background: linear-gradient(135deg, var(--blue), var(--cyan));
-  font-size: 28px;
+  font-size: 34px;
   font-weight: 900;
   line-height: 1;
   text-align: center;
