@@ -38,7 +38,7 @@ Il sito doveva:
 - Home aziendale con hero, immagine principale, form iniziale e call to action.
 - Pagina servizi con card, descrizioni e immagini.
 - Contatori animati e micro-animazioni leggere.
-- Sezione recensioni con card dimostrative dichiarate e collegamento al profilo Google ufficiale.
+- Sezione recensioni collegata al profilo Google ufficiale, senza recensioni non verificate nel codice pubblico.
 - Preventivo dinamico con campi specifici per servizio.
 - Assistente virtuale con risposte controllate.
 - Pulsanti WhatsApp.
@@ -133,7 +133,7 @@ Quando il form viene completato in modalita portfolio, il sito mostra:
 
 ## Recensioni Google
 
-La sezione recensioni include card dimostrative dichiarate, utili a mostrare il layout grafico, e rimanda al profilo ufficiale tramite il collegamento configurato nel progetto. In produzione, i testi dimostrativi vanno sostituiti con recensioni reali verificate dal profilo Google aziendale.
+La sezione recensioni rimanda al profilo Google ufficiale tramite il collegamento configurato nel progetto. Eventuali card con testi, nomi, date e stelle devono essere pubblicate solo dopo verifica manuale delle recensioni reali presenti sul profilo aziendale.
 
 ## Screenshot
 

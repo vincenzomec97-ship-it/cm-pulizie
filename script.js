@@ -1549,7 +1549,7 @@ if (revealItems.length) {
 
 if (counterItems.length) {
   const setCounterValue = (item, value) => {
-    item.textContent = `+${value}`;
+    item.textContent = `${value}+`;
   };
 
   const animateCounter = (item) => {

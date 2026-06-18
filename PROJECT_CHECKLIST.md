@@ -6,7 +6,7 @@
 - [x] Chatbot verificato
 - [x] WhatsApp verificato
 - [x] Contatori verificati
-- [x] Recensioni dimostrative dichiarate e collegamento Google ufficiale mantenuto
+- [x] Collegamento recensioni Google ufficiale mantenuto senza recensioni non verificate
 - [x] Nessun dato inviato in modalita portfolio
 - [x] Nessuna credenziale pubblica
 - [x] Nessun errore console
