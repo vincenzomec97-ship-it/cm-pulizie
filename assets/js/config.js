@@ -11,6 +11,8 @@ window.CM_CONFIG = {
   formEndpoint: "",
   googleMapsUrl: "https://maps.app.goo.gl/mdHLhVkuGk9x565KA?g_st=ic",
   googleReviewsUrl: "https://share.google/IhgWBgoqe21N4Gkul",
+  googleRating: null,
+  googleReviewCount: null,
   facebookUrl: "https://www.facebook.com/share/1avRifo9CY/?mibextid=wwXIfr",
   yellowPagesUrl: "https://share.google/8ZzKNl85I47vZyRSR",
   googleBusinessUrl: "https://maps.app.goo.gl/mdHLhVkuGk9x565KA?g_st=ic",

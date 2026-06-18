@@ -53,6 +53,6 @@ Prima della pubblicazione reale verificare:
 
 ## Recensioni e statistiche
 
-La sezione recensioni mostra card visibili e rimanda al profilo Google ufficiale. Per la pubblicazione reale, sostituire i testi delle card con recensioni effettivamente presenti e verificabili sul profilo aziendale.
+La sezione recensioni rimanda al profilo Google ufficiale. Pubblicare card con testi, nomi, date e stelle solo dopo verifica manuale delle recensioni reali presenti sul profilo aziendale.
 
 Le statistiche pubbliche vanno mostrate solo quando sono reali e verificabili. Non aggiungere rating aggregati o recensioni nei dati strutturati SEO se non sono reali e aggiornabili.

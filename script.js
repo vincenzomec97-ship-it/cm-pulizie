@@ -10,6 +10,8 @@ const CM_CONFIG = {
   formEndpoint: "",
   googleMapsUrl: "https://maps.app.goo.gl/mdHLhVkuGk9x565KA?g_st=ic",
   googleReviewsUrl: "https://share.google/IhgWBgoqe21N4Gkul",
+  googleRating: null,
+  googleReviewCount: null,
   facebookUrl: "https://www.facebook.com/share/1avRifo9CY/?mibextid=wwXIfr",
   yellowPagesUrl: "https://share.google/8ZzKNl85I47vZyRSR",
   googleBusinessUrl: "https://maps.app.goo.gl/mdHLhVkuGk9x565KA?g_st=ic",
@@ -1021,44 +1023,15 @@ async function handleEstimateSubmit(event) {
   renderEstimate({ data, service, missing, collected, range, message, technical });
 
   if (missing.length) {
+    if (whatsappFallback) {
+      whatsappFallback.hidden = true;
+      whatsappFallback.removeAttribute("href");
+    }
     setSubmissionFeedback("Completa i dati indicati per inviare la richiesta. La stima resta indicativa e non vincolante.");
     return;
   }
 
-  setSubmissionFeedback(isPortfolioMode() ? "Preparazione anteprima demo..." : "Invio richiesta in corso...");
-  estimateForm.dataset.submitting = "true";
-  const submitButton = estimateForm.querySelector('button[type="submit"]');
-  if (submitButton) {
-    submitButton.disabled = true;
-    submitButton.dataset.originalText = submitButton.textContent;
-    submitButton.textContent = "Preparazione...";
-  }
-
-  try {
-    const result = await submitQuoteRequest(technical);
-    if (result?.pdfLink && pdfLink) {
-      pdfLink.href = result.pdfLink;
-      pdfLink.hidden = false;
-    }
-    removeQuotePrefill();
-    if (result?.mode === "remote") {
-      setSubmissionFeedback("Richiesta inviata correttamente. Riceverai una conferma e sarai ricontattato per i dettagli.");
-    } else if (result?.mode === "not_configured") {
-      setSubmissionFeedback(FORM_NOT_CONNECTED_MESSAGE);
-    } else {
-      setSubmissionFeedback(PORTFOLIO_DEMO_MESSAGE);
-    }
-  } catch {
-    setSubmissionFeedback(isPortfolioMode()
-      ? PORTFOLIO_DEMO_MESSAGE
-      : "Non siamo riusciti a completare l'invio online. Puoi usare il riepilogo e inviarlo tramite WhatsApp.");
-  } finally {
-    estimateForm.dataset.submitting = "false";
-    if (submitButton) {
-      submitButton.disabled = false;
-      submitButton.textContent = submitButton.dataset.originalText || "Richiedi preventivo";
-    }
-  }
+  setSubmissionFeedback("Richiesta pronta. Premi il pulsante qui sotto per inviarla realmente tramite WhatsApp.");
 }
 
 function renderEstimate({ data, service, missing, collected, range, message, technical }) {

@@ -2685,11 +2685,8 @@ body {
 }
 
 .google-mark {
-  width: 54px;
-  height: 54px;
-  border-radius: 50%;
-  background: var(--white);
-  box-shadow: 0 12px 28px rgba(18, 63, 98, 0.14);
+  width: 42px;
+  height: 42px;
 }
 
 .google-icon {
@@ -4373,6 +4370,20 @@ textarea:focus-visible {
   flex: 0 0 auto;
   color: var(--blue);
   text-decoration: none;
+}
+
+.client-actions .whatsapp-request-button {
+  min-height: 52px;
+  padding-inline: 24px;
+  color: var(--white);
+  background: var(--blue);
+  box-shadow: 0 14px 30px rgba(28, 93, 145, 0.18);
+}
+
+.client-actions .whatsapp-request-button:hover,
+.client-actions .whatsapp-request-button:focus-visible {
+  color: var(--white);
+  background: var(--blue-deep);
 }
 
 .admin-panel,
