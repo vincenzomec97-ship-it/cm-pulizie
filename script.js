@@ -1011,18 +1011,8 @@ async function handleEstimateSubmit(event) {
     missing.push("accettazione informativa privacy");
   }
 
-  const collected = collectFilledData(data, service);
-  const range = missing.length || !service
-    ? "Da stimare dopo i dati mancanti"
-    : service.calculate(data);
-  const requestId = createRequestId();
-  const submittedAt = new Date().toISOString();
-  const message = buildClientMessage({ data, service, missing, range, requestId });
-  const technical = buildTechnicalJson({ data, service, missing, range, collected, requestId, submittedAt });
-
-  renderEstimate({ data, service, missing, collected, range, message, technical });
-
   if (missing.length) {
+    if (output) output.hidden = true;
     if (whatsappFallback) {
       whatsappFallback.hidden = true;
       whatsappFallback.removeAttribute("href");
@@ -1031,6 +1021,14 @@ async function handleEstimateSubmit(event) {
     return;
   }
 
+  const collected = collectFilledData(data, service);
+  const range = service.calculate(data);
+  const requestId = createRequestId();
+  const submittedAt = new Date().toISOString();
+  const message = buildClientMessage({ data, service, missing, range, requestId });
+  const technical = buildTechnicalJson({ data, service, missing, range, collected, requestId, submittedAt });
+
+  renderEstimate({ data, service, missing, collected, range, message, technical });
   setSubmissionFeedback("Richiesta pronta. Premi il pulsante qui sotto per inviarla realmente tramite WhatsApp.");
 }
 
@@ -1041,19 +1039,11 @@ function renderEstimate({ data, service, missing, collected, range, message, tec
   document.getElementById("clientMessage").value = message;
   if (requestSummary) requestSummary.textContent = buildReadableRequestSummary(technical);
 
-  const requestIdOutput = document.getElementById("requestIdOutput");
-  if (requestIdOutput) requestIdOutput.textContent = technical.id;
   if (pdfLink) {
     pdfLink.hidden = true;
     pdfLink.removeAttribute("href");
   }
   updateWhatsAppFallbackLink(message);
-
-  renderList(document.getElementById("collectedOutput"), collected.map((item) => `${item.label}: ${item.value}`));
-  renderList(
-    document.getElementById("missingOutput"),
-    missing.length ? missing.map((item) => `Per preparare la stima serve anche: ${item}.`) : ["Nessun dato essenziale mancante."]
-  );
 
   if (manualReview) manualReview.checked = false;
   if (copyMessage) copyMessage.disabled = true;
@@ -1271,15 +1261,6 @@ function formatDateTime(value) {
   } catch {
     return value;
   }
-}
-
-function renderList(list, items) {
-  list.innerHTML = "";
-  items.forEach((item) => {
-    const li = document.createElement("li");
-    li.textContent = item;
-    list.appendChild(li);
-  });
 }
 
 function labelForField(name) {
