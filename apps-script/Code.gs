@@ -1,4 +1,5 @@
 const SHEET_NAME = 'Richieste preventivo';
+const SPREADSHEET_FILE_NAME = 'C.M. Pulizie - Richieste preventivo';
 const PDF_FOLDER_NAME = 'Preventivi CM Pulizie';
 const DEFAULT_OWNER_EMAIL = 'info@c.m.puliziesrl.it';
 const STATI_RICHIESTA = ['Nuova', 'Da ricontattare', 'Preventivo inviato', 'Confermata', 'Rifiutata', 'Completata'];
@@ -265,8 +266,27 @@ function parsePayload_(e) {
 }
 
 function getSheet_() {
-  const spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  const spreadsheet = getSpreadsheet_();
   return spreadsheet.getSheetByName(SHEET_NAME) || spreadsheet.insertSheet(SHEET_NAME);
+}
+
+function getSpreadsheet_() {
+  const spreadsheetId = PropertiesService.getScriptProperties().getProperty('SPREADSHEET_ID');
+  if (spreadsheetId) {
+    return SpreadsheetApp.openById(spreadsheetId);
+  }
+
+  const activeSpreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+  if (activeSpreadsheet) {
+    return activeSpreadsheet;
+  }
+
+  const files = DriveApp.getFilesByName(SPREADSHEET_FILE_NAME);
+  if (files.hasNext()) {
+    return SpreadsheetApp.openById(files.next().getId());
+  }
+
+  return SpreadsheetApp.create(SPREADSHEET_FILE_NAME);
 }
 
 function ensureHeaders_(sheet, headers) {

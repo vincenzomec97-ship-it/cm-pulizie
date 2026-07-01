@@ -34,6 +34,7 @@ La demo non invia e non salva dati personali. Per attivare l'invio reale con Goo
 3. In Apps Script apri **Impostazioni progetto > Proprieta script** e aggiungi:
    - `OWNER_EMAIL`: email del titolare che deve ricevere le nuove richieste.
    - `ADMIN_TOKEN`: password/token da usare in `admin.html`.
+   - `SPREADSHEET_ID`: opzionale, ID del Google Sheet da usare. Se manca, lo script crea o riusa un file chiamato `C.M. Pulizie - Richieste preventivo`.
 4. Distribuisci lo script come **App web** con accesso consentito agli utenti necessari.
 5. Copia l'URL della Web App in `assets/js/config.js` dentro `formEndpoint`.
 6. Cambia `mode` da `"portfolio"` a `"production"` in `assets/js/config.js` e in `data/site-config.json`.
