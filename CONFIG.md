@@ -27,15 +27,24 @@ Aggiorna questi valori quando il sito passa da demo portfolio a produzione:
 
 ## Modulo preventivo
 
-La demo non invia e non salva dati personali. Per attivare l'invio reale serve configurare:
+La demo non invia e non salva dati personali. Per attivare l'invio reale con Google Sheets:
 
-- endpoint sicuro in `formEndpoint`;
-- gestione server o Google Apps Script;
-- protezione da spam;
-- email di conferma;
-- trattamento privacy;
-- conservazione dei dati;
-- eventuale PDF riepilogativo.
+1. Crea un Google Sheet dedicato alle richieste.
+2. Apri **Estensioni > Apps Script** e incolla il contenuto di `apps-script/Code.gs`.
+3. In Apps Script apri **Impostazioni progetto > Proprieta script** e aggiungi:
+   - `OWNER_EMAIL`: email del titolare che deve ricevere le nuove richieste.
+   - `ADMIN_TOKEN`: password/token da usare in `admin.html`.
+4. Distribuisci lo script come **App web** con accesso consentito agli utenti necessari.
+5. Copia l'URL della Web App in `assets/js/config.js` dentro `formEndpoint`.
+6. Cambia `mode` da `"portfolio"` a `"production"` in `assets/js/config.js` e in `data/site-config.json`.
+
+Quando configurato, il flusso fa cinque cose:
+
+- salva la richiesta nel foglio `Richieste preventivo`;
+- invia un'email automatica al cliente;
+- invia un'email automatica al titolare;
+- genera un PDF riepilogativo in Google Drive;
+- permette la consultazione da `admin.html` tramite token.
 
 Non inserire chiavi private, token o password nel frontend.
 

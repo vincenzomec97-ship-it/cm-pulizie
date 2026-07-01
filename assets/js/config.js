@@ -9,6 +9,7 @@ window.CM_CONFIG = {
   email: "info@c.m.puliziesrl.it",
   websiteUrl: "https://vincenzomec97-ship-it.github.io/cm-pulizie/",
   formEndpoint: "",
+  enableLocalRequestStorage: false,
   googleMapsUrl: "https://maps.app.goo.gl/mdHLhVkuGk9x565KA?g_st=ic",
   googleReviewsUrl: "https://www.google.com/search?client=ms-opera-touch-iphone&hs=nh6p&sca_esv=25bb37eb50603e0c&espv=1&channel=new&hl=it-IT&uds=AJ5uw1_a2D0D09lxm8gpKKOTUn4r7WzSgXPw8vZp-ZKBAgd1k-ayGX4w34iN71tNSY4IqzRjIQ2NvM6Ebv10LZqWjFY4t-2JYLdEZaZXG9pF6aYMixV8RVZDSVJbQ4N96T386ExL0ggFrkV3YWWQB8oiuHXLtrFyIn6wMATP4jJO-6MS7sJmjWI&q=C.M.+Pulizie+Recensioni&si=APenkKm7iecQ4G6P-TsbSMFKIQtv3EFIqRAFw-i8uEbk55Z-_2I8qmC2BIDCDjXqkyDwndaRZtejePzDh7IX2dUWSBtkuCLwvtGi-Oew2PjWV-1B3exQSlfo6V3wbjEsu3HvXYlkuw5Z&sa=X&ved=2ahUKEwjqi_CH_ZOVAxV4gv0HHTc_MYcQ_4MLegQILhAO&biw=963&bih=704&dpr=1.25",
   googleRating: null,

@@ -8,6 +8,7 @@ const CM_CONFIG = {
   email: "info@c.m.puliziesrl.it",
   websiteUrl: "https://vincenzomec97-ship-it.github.io/cm-pulizie/",
   formEndpoint: "",
+  enableLocalRequestStorage: false,
   googleMapsUrl: "https://maps.app.goo.gl/mdHLhVkuGk9x565KA?g_st=ic",
   googleReviewsUrl: "https://www.google.com/search?client=ms-opera-touch-iphone&hs=nh6p&sca_esv=25bb37eb50603e0c&espv=1&channel=new&hl=it-IT&uds=AJ5uw1_a2D0D09lxm8gpKKOTUn4r7WzSgXPw8vZp-ZKBAgd1k-ayGX4w34iN71tNSY4IqzRjIQ2NvM6Ebv10LZqWjFY4t-2JYLdEZaZXG9pF6aYMixV8RVZDSVJbQ4N96T386ExL0ggFrkV3YWWQB8oiuHXLtrFyIn6wMATP4jJO-6MS7sJmjWI&q=C.M.+Pulizie+Recensioni&si=APenkKm7iecQ4G6P-TsbSMFKIQtv3EFIqRAFw-i8uEbk55Z-_2I8qmC2BIDCDjXqkyDwndaRZtejePzDh7IX2dUWSBtkuCLwvtGi-Oew2PjWV-1B3exQSlfo6V3wbjEsu3HvXYlkuw5Z&sa=X&ved=2ahUKEwjqi_CH_ZOVAxV4gv0HHTc_MYcQ_4MLegQILhAO&biw=963&bih=704&dpr=1.25",
   googleRating: null,
@@ -1001,6 +1002,10 @@ async function handleEstimateSubmit(event) {
     if (!isFilled(data[name])) missing.push(labelForField(name));
   });
 
+  if (isFilled(data.email) && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(data.email).trim())) {
+    missing.push("email valida");
+  }
+
   if (service) {
     service.fields.forEach((name) => {
       if (!isFilled(data[name])) missing.push(labelForField(name));
@@ -1029,7 +1034,31 @@ async function handleEstimateSubmit(event) {
   const technical = buildTechnicalJson({ data, service, missing, range, collected, requestId, submittedAt });
 
   renderEstimate({ data, service, missing, collected, range, message, technical });
-  setSubmissionFeedback("Richiesta pronta. Premi il pulsante qui sotto per inviarla realmente tramite WhatsApp.");
+  setEstimateSubmitting(true);
+  setSubmissionFeedback("Invio richiesta in corso...");
+
+  try {
+    const result = await submitQuoteRequest(technical);
+    const requestWithPdf = { ...technical, pdf_link: result.pdfLink || technical.pdf_link };
+    renderEstimate({ data, service, missing, collected, range, message, technical: requestWithPdf });
+
+    if (result.mode === "remote") {
+      setSubmissionFeedback("Richiesta inviata. Abbiamo salvato i dati, generato il PDF e inviato le email automatiche.");
+      return;
+    }
+
+    if (result.mode === "portfolio") {
+      setSubmissionFeedback(PORTFOLIO_DEMO_MESSAGE);
+      return;
+    }
+
+    setSubmissionFeedback(FORM_NOT_CONNECTED_MESSAGE);
+  } catch {
+    saveLocalRequest(technical);
+    setSubmissionFeedback("Non siamo riusciti a completare l'invio automatico. Puoi inviare subito il riepilogo tramite WhatsApp.");
+  } finally {
+    setEstimateSubmitting(false);
+  }
 }
 
 function renderEstimate({ data, service, missing, collected, range, message, technical }) {
@@ -1040,8 +1069,13 @@ function renderEstimate({ data, service, missing, collected, range, message, tec
   if (requestSummary) requestSummary.textContent = buildReadableRequestSummary(technical);
 
   if (pdfLink) {
-    pdfLink.hidden = true;
-    pdfLink.removeAttribute("href");
+    if (technical?.pdf_link) {
+      pdfLink.href = technical.pdf_link;
+      pdfLink.hidden = false;
+    } else {
+      pdfLink.hidden = true;
+      pdfLink.removeAttribute("href");
+    }
   }
   updateWhatsAppFallbackLink(message);
 
@@ -1164,27 +1198,32 @@ function collectServiceDetails(data) {
 }
 
 function buildReadableRequestSummary(request) {
-  const serviceLines = request.service_details.length
-    ? request.service_details.map((item) => `- ${item.label}: ${item.value}`).join("\n")
+  const normalized = normalizeRequest(request);
+  const serviceDetails = Array.isArray(normalized.service_details) ? normalized.service_details : [];
+  const estimate = normalized.indicative_estimate || {};
+  const serviceLines = serviceDetails.length
+    ? serviceDetails.map((item) => `- ${item.label || item.campo || "Dettaglio"}: ${item.value || "-"}`).join("\n")
     : "- Nessun dettaglio specifico inserito";
 
-  return `Numero richiesta: ${request.id}
-Data invio: ${formatDateTime(request.submitted_at)}
-Nome: ${request.nome || "-"}
-Telefono: ${request.telefono || "-"}
-Email: ${request.email || "-"}
-Zona: ${request.zona || "-"}
-Servizio: ${request.service_type || "-"}
-Frequenza: ${request.frequenza || "-"}
-Data preferita: ${request.data_preferita || "da concordare"}
-Fascia stimata: ${request.indicative_estimate.price_range}
+  return `Numero richiesta: ${normalized.id || "-"}
+Data invio: ${formatDateTime(normalized.submitted_at)}
+Nome: ${normalized.nome || "-"}
+Telefono: ${normalized.telefono || "-"}
+Email: ${normalized.email || "-"}
+Zona: ${normalized.zona || "-"}
+Servizio: ${normalized.service_type || "-"}
+Frequenza: ${normalized.frequenza || "-"}
+Data preferita: ${normalized.data_preferita || "da concordare"}
+Fascia stimata: ${normalized.importo_stimato || estimate.price_range || "-"}
+Stato: ${normalized.status || REQUEST_STATUS_NEW}
+PDF: ${normalized.pdf_link || "-"}
 
 Dettagli servizio:
 ${serviceLines}
 
-Note: ${request.note || "-"}
+Note: ${normalized.note || "-"}
 
-${request.mandatory_disclaimer}`;
+${normalized.mandatory_disclaimer || getEstimateNotice()}`;
 }
 
 async function submitQuoteRequest(request) {
@@ -1210,6 +1249,10 @@ async function submitQuoteRequest(request) {
   }
 
   const result = await response.json().catch(() => ({}));
+  if (!result.ok) {
+    throw new Error(result.error || "Invio richiesta non riuscito");
+  }
+
   saveLocalRequest({ ...request, pdf_link: result.pdfLink || request.pdf_link });
   return {
     mode: "remote",
@@ -1249,6 +1292,13 @@ function setSubmissionFeedback(message, hidden = false) {
   if (!submissionFeedback) return;
   submissionFeedback.textContent = message;
   submissionFeedback.hidden = hidden || !message;
+}
+
+function setEstimateSubmitting(isSubmitting) {
+  estimateForm.dataset.submitting = isSubmitting ? "true" : "false";
+  estimateForm.querySelectorAll("button").forEach((button) => {
+    button.disabled = isSubmitting;
+  });
 }
 
 function formatDateTime(value) {
@@ -1330,6 +1380,7 @@ const adminForm = document.getElementById("adminLoadForm");
 const adminFeedback = document.getElementById("adminFeedback");
 const adminTableBody = document.getElementById("adminRequestsBody");
 const adminDetail = document.getElementById("adminDetail");
+let adminLoadedRequests = [];
 
 if (adminForm && adminTableBody) {
   renderAdminRequests(getLocalRequests());
@@ -1362,7 +1413,7 @@ if (adminForm && adminTableBody) {
     const id = button.dataset.id;
     const action = button.dataset.action;
     const status = button.dataset.status;
-    const request = getLocalRequests().find((item) => item.id === id);
+    const request = adminLoadedRequests.find((item) => item.id === id) || getLocalRequests().find((item) => item.id === id);
 
     if (action === "details") {
       if (adminDetail) {
@@ -1373,8 +1424,12 @@ if (adminForm && adminTableBody) {
     }
 
     if (action === "status" && status) {
-      await updateRequestStatus(id, status, new FormData(adminForm).get("adminToken"));
-      setAdminFeedback(`Stato aggiornato: ${status}`);
+      try {
+        await updateRequestStatus(id, status, new FormData(adminForm).get("adminToken"));
+        setAdminFeedback(`Stato aggiornato: ${status}`);
+      } catch {
+        setAdminFeedback("Non siamo riusciti ad aggiornare lo stato. Controlla token ed endpoint.");
+      }
     }
   });
 }
@@ -1402,7 +1457,8 @@ async function loadAdminRequests(token) {
   const response = await fetch(url, { method: "GET" });
   if (!response.ok) throw new Error("Admin non disponibile");
   const result = await response.json();
-  return Array.isArray(result.requests) ? result.requests : [];
+  if (!result.ok) throw new Error(result.error || "Admin non disponibile");
+  return Array.isArray(result.requests) ? result.requests.map(normalizeRequest) : [];
 }
 
 async function updateRequestStatus(id, status, token) {
@@ -1411,14 +1467,14 @@ async function updateRequestStatus(id, status, token) {
     return;
   }
 
-  const localRequests = getLocalRequests();
+  const localRequests = adminLoadedRequests.length ? adminLoadedRequests : getLocalRequests();
   const nextRequests = localRequests.map((request) => request.id === id ? { ...request, status } : request);
   localStorage.setItem(LOCAL_REQUESTS_KEY, JSON.stringify(nextRequests));
   renderAdminRequests(nextRequests);
 
   if (!isGoogleScriptConfigured()) return;
 
-  await fetch(GOOGLE_SCRIPT_WEB_APP_URL, {
+  const response = await fetch(GOOGLE_SCRIPT_WEB_APP_URL, {
     method: "POST",
     headers: { "Content-Type": "text/plain;charset=utf-8" },
     body: JSON.stringify({
@@ -1428,13 +1484,18 @@ async function updateRequestStatus(id, status, token) {
       status
     })
   });
+  if (!response.ok) throw new Error("Aggiornamento non riuscito");
+
+  const result = await response.json().catch(() => ({}));
+  if (!result.ok) throw new Error(result.error || "Aggiornamento non riuscito");
 }
 
 function renderAdminRequests(requests) {
   if (!adminTableBody) return;
+  adminLoadedRequests = Array.isArray(requests) ? requests.map(normalizeRequest) : [];
   adminTableBody.innerHTML = "";
 
-  if (!requests.length) {
+  if (!adminLoadedRequests.length) {
     const row = document.createElement("tr");
     const cell = document.createElement("td");
     cell.colSpan = 9;
@@ -1446,7 +1507,7 @@ function renderAdminRequests(requests) {
     return;
   }
 
-  requests.forEach((request) => {
+  adminLoadedRequests.forEach((request) => {
     const row = document.createElement("tr");
     [
       formatDateTime(request.submitted_at),
@@ -1502,6 +1563,33 @@ function renderAdminRequests(requests) {
 function setAdminFeedback(message) {
   if (!adminFeedback) return;
   adminFeedback.textContent = message;
+}
+
+function normalizeRequest(request) {
+  const normalized = { ...(request || {}) };
+  ["service_details", "collected_data", "missing_data"].forEach((key) => {
+    normalized[key] = parseJsonArray(normalized[key]);
+  });
+
+  if (!normalized.indicative_estimate) {
+    normalized.indicative_estimate = {
+      price_range: normalized.importo_stimato || ""
+    };
+  }
+
+  return normalized;
+}
+
+function parseJsonArray(value) {
+  if (Array.isArray(value)) return value;
+  if (!value) return [];
+
+  try {
+    const parsed = JSON.parse(value);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
 }
 
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
