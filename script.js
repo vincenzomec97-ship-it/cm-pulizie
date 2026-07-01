@@ -1048,14 +1048,14 @@ async function handleEstimateSubmit(event) {
     }
 
     if (result.mode === "portfolio") {
-      setSubmissionFeedback(PORTFOLIO_DEMO_MESSAGE);
+      setSubmissionFeedback(`${PORTFOLIO_DEMO_MESSAGE} Per inviare email automatiche al cliente devi attivare Google Apps Script in produzione.`);
       return;
     }
 
-    setSubmissionFeedback(FORM_NOT_CONNECTED_MESSAGE);
+    setSubmissionFeedback(`${FORM_NOT_CONNECTED_MESSAGE} L'email automatica al cliente non parte finche formEndpoint non e configurato.`);
   } catch {
     saveLocalRequest(technical);
-    setSubmissionFeedback("Non siamo riusciti a completare l'invio automatico. Puoi inviare subito il riepilogo tramite WhatsApp.");
+    setSubmissionFeedback("Non siamo riusciti a completare l'invio automatico via email. Puoi inoltrare al titolare il riepilogo tramite WhatsApp.");
   } finally {
     setEstimateSubmitting(false);
   }
@@ -1077,7 +1077,7 @@ function renderEstimate({ data, service, missing, collected, range, message, tec
       pdfLink.removeAttribute("href");
     }
   }
-  updateWhatsAppFallbackLink(message);
+  updateWhatsAppFallbackLink(buildOwnerWhatsAppMessage(technical));
 
   if (manualReview) manualReview.checked = false;
   if (copyMessage) copyMessage.disabled = true;
@@ -1224,6 +1224,30 @@ ${serviceLines}
 Note: ${normalized.note || "-"}
 
 ${normalized.mandatory_disclaimer || getEstimateNotice()}`;
+}
+
+function buildOwnerWhatsAppMessage(request) {
+  const normalized = normalizeRequest(request);
+  const serviceLines = normalized.service_details.length
+    ? normalized.service_details.map((item) => `- ${item.label || item.campo || "Dettaglio"}: ${item.value || "-"}`).join("\n")
+    : "- Nessun dettaglio specifico inserito";
+
+  return `Nuova richiesta preventivo dal sito C.M. Pulizie
+
+Numero richiesta: ${normalized.id || "-"}
+Nome: ${normalized.nome || "-"}
+Telefono: ${normalized.telefono || "-"}
+Email: ${normalized.email || "-"}
+Zona: ${normalized.zona || "-"}
+Servizio: ${normalized.service_type || "-"}
+Frequenza: ${normalized.frequenza || "-"}
+Data preferita: ${normalized.data_preferita || "da concordare"}
+Fascia stimata: ${normalized.importo_stimato || normalized.indicative_estimate?.price_range || "-"}
+
+Dettagli servizio:
+${serviceLines}
+
+Note: ${normalized.note || "-"}`;
 }
 
 async function submitQuoteRequest(request) {
