@@ -4033,9 +4033,9 @@ textarea:focus-visible {
 .rich-footer {
   align-items: start;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  column-gap: clamp(22px, 3vw, 44px);
-  row-gap: 34px;
-  padding-top: clamp(46px, 6vw, 72px);
+  column-gap: clamp(28px, 4vw, 58px);
+  row-gap: 38px;
+  padding-top: clamp(42px, 5vw, 62px);
   padding-bottom: 34px;
   background:
     radial-gradient(circle at 12% 0%, rgba(58, 164, 216, 0.34), transparent 34%),
@@ -4066,14 +4066,24 @@ textarea:focus-visible {
 .rich-footer .footer-col p {
   margin: 0;
   color: rgba(255, 255, 255, 0.82);
-  font-size: 16px;
-  line-height: 1.5;
+  font-size: 15px;
+  line-height: 1.62;
+  font-weight: 600;
+}
+
+.rich-footer .footer-col p strong {
+  display: inline;
+  margin: 0;
+  color: var(--white);
+  font: inherit;
+  font-weight: 800;
+  letter-spacing: 0;
 }
 
 .rich-footer h2 {
   position: relative;
-  margin-bottom: 18px;
-  font-size: 22px;
+  margin-bottom: 16px;
+  font-size: 21px;
   line-height: 1.1;
 }
 
@@ -4089,37 +4099,37 @@ textarea:focus-visible {
 
 .rich-footer .footer-col {
   min-width: 0;
-  gap: 10px;
+  gap: 9px;
 }
 
 .rich-footer .footer-brand {
   grid-column: 1 / -1;
   min-width: 0;
   display: grid;
-  grid-template-columns: minmax(220px, 0.7fr) minmax(0, 1.3fr);
-  gap: clamp(18px, 4vw, 58px);
+  grid-template-columns: minmax(220px, 0.58fr) minmax(0, 1.42fr);
+  gap: clamp(18px, 4vw, 48px);
   align-items: center;
-  padding: clamp(18px, 3vw, 26px);
+  padding: clamp(18px, 2.6vw, 24px);
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-bottom: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 22px;
+  border-radius: 18px;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.035));
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
 .rich-footer .footer-brand p {
-  max-width: 760px;
+  max-width: 680px;
   color: rgba(255, 255, 255, 0.84);
-  font-size: clamp(16px, 1.55vw, 19px);
-  font-weight: 800;
-  line-height: 1.45;
+  font-size: clamp(15px, 1.35vw, 17px);
+  font-weight: 700;
+  line-height: 1.55;
 }
 
 .rich-footer .footer-col a,
 .rich-footer .footer-cta,
 .footer-phone-list {
-  font-size: 16px;
-  line-height: 1.5;
+  font-size: 15px;
+  line-height: 1.6;
 }
 
 .rich-footer .footer-col a,
@@ -4128,13 +4138,13 @@ textarea:focus-visible {
 }
 
 .footer-phone-list {
-  margin-top: 8px;
+  margin-top: 6px;
   color: rgba(255, 255, 255, 0.9);
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .footer-phone-list a {
-  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .footer-hours {
@@ -4161,7 +4171,7 @@ textarea:focus-visible {
 
   .rich-footer .footer-brand {
     grid-column: 1 / -1;
-    max-width: 620px;
+    max-width: none;
     padding-right: 0;
   }
 
@@ -4181,7 +4191,7 @@ textarea:focus-visible {
     display: grid;
     grid-template-columns: 1fr;
     gap: 12px;
-    padding-bottom: 20px;
+    padding: 18px;
   }
 
   .rich-footer .footer-brand strong::before {
