@@ -4545,7 +4545,7 @@ textarea:focus-visible {
 
 /* Homepage hero precision pass */
 .home-page .hero-inner {
-  --home-hero-panel-height: clamp(424px, 33vw, 456px);
+  --home-hero-panel-height: clamp(486px, 38vw, 520px);
   grid-template-columns: minmax(288px, 0.95fr) minmax(318px, 340px) minmax(372px, 1.2fr);
   align-items: stretch;
   padding: clamp(24px, 3vw, 36px);
@@ -4574,25 +4574,72 @@ textarea:focus-visible {
 }
 
 .home-page .quote-form {
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  height: var(--home-hero-panel-height);
+  height: auto;
   min-height: var(--home-hero-panel-height);
   align-self: center;
   margin: 0;
-  padding: clamp(20px, 2vw, 24px);
+  padding: clamp(18px, 1.8vw, 22px);
   border-right: 0;
   border-radius: 22px 0 0 22px;
   box-sizing: border-box;
   box-shadow: 0 24px 58px rgba(18, 63, 98, 0.14);
 }
 
+.home-page .quote-form .quote-heading {
+  min-height: 68px;
+  margin-bottom: 14px;
+  padding: 12px 16px;
+  border-radius: 16px;
+}
+
+.home-page .quote-form .quote-heading h2 {
+  font-size: 19px;
+}
+
+.home-page .quote-form .quote-heading p {
+  font-size: 13px;
+}
+
+.home-page .quote-form .form-fields {
+  gap: 10px;
+}
+
+.home-page .quote-form .form-fields input {
+  height: 48px;
+  font-size: 16px;
+}
+
 .home-page .quote-form .customer-type {
-  margin: 12px 0 12px;
+  margin: 12px 0 8px;
   gap: 6px;
 }
 
+.home-page .quote-form .customer-type label {
+  font-size: 15px;
+  line-height: 1.1;
+}
+
+.home-page .quote-form > .privacy-check {
+  margin: 6px 0 10px;
+  gap: 8px;
+  font-size: 14px;
+  line-height: 1.22;
+}
+
+.home-page .quote-form > .privacy-check input {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  margin-top: 1px;
+}
+
 .home-page .quote-form button {
-  margin-top: 0;
+  min-height: 48px;
+  margin-top: auto;
+  font-size: 16px;
 }
 
 .home-page .hero-photo {
@@ -4682,17 +4729,21 @@ textarea:focus-visible {
   .home-page .quote-form,
   .home-page .hero-photo {
     grid-column: auto;
-    width: 100%;
     max-width: 100%;
     min-width: 0;
+    margin-right: auto;
+    margin-left: auto;
   }
 
   .home-page .quote-form {
+    width: min(100%, 340px);
     height: auto;
     min-height: 0;
+    border-radius: 22px;
   }
 
   .home-page .hero-photo {
+    width: 100%;
     min-height: 0;
     aspect-ratio: 4 / 3;
     border-radius: 22px;
