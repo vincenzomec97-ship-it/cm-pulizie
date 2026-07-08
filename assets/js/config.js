@@ -1,7 +1,7 @@
 window.CM_CONFIG = {
   mode: "production",
   businessName: "C.M. Pulizie",
-  legalName: "C.M. Pulizie",
+  legalName: "C.M. SRLS",
   phoneNumber: "3383861399",
   secondaryPhoneNumber: "3276623190",
   whatsappNumber: "393383861399",

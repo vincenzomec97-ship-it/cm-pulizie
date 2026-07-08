@@ -250,7 +250,8 @@ function handleHomeQuoteSubmit(event) {
     email: String(formData.get("email") || "").trim(),
     phone: String(formData.get("phone") || "").trim(),
     customerType,
-    serviceType: String(formData.get("serviceType") || "").trim()
+    serviceType: String(formData.get("serviceType") || "").trim(),
+    privacyAccepted: quoteForm.querySelector('[name="privacy"]')?.checked === true
   };
 
   const errors = validateHomeQuotePayload(payload);
@@ -292,6 +293,10 @@ function validateHomeQuotePayload(payload) {
     errors.customerType = "Seleziona azienda o privato.";
   }
 
+  if (!payload.privacyAccepted) {
+    errors.privacy = "Per continuare devi accettare l'informativa privacy.";
+  }
+
   return errors;
 }
 
@@ -302,12 +307,13 @@ function renderHomeQuoteErrors(errors) {
 
   const customerError = document.getElementById("homeCustomerTypeError");
   if (customerError) customerError.textContent = errors.customerType || "";
+  setHomeFieldError("privacy", errors.privacy);
 
-  setQuoteFeedback("Controlla i campi evidenziati prima di continuare.", false);
+  setQuoteFeedback(errors.privacy && Object.keys(errors).length === 1 ? errors.privacy : "Controlla i campi evidenziati prima di continuare.", false);
 }
 
 function clearHomeQuoteErrors() {
-  ["name", "email", "phone"].forEach((name) => setHomeFieldError(name, ""));
+  ["name", "email", "phone", "privacy"].forEach((name) => setHomeFieldError(name, ""));
   const customerError = document.getElementById("homeCustomerTypeError");
   if (customerError) customerError.textContent = "";
   setQuoteFeedback("", true);
@@ -455,7 +461,41 @@ document.querySelectorAll(".page-form").forEach((form) => {
     event.preventDefault();
 
     const feedback = form.querySelector(".form-feedback");
+    const requiredFields = Array.from(form.querySelectorAll("[required]")).filter((field) => field.type !== "checkbox");
+    const missingRequired = requiredFields.find((field) => !String(field.value || "").trim());
+    if (missingRequired) {
+      if (feedback) {
+        feedback.textContent = "Completa i campi obbligatori prima di continuare.";
+        feedback.hidden = false;
+      }
+      missingRequired.focus();
+      return;
+    }
+
+    const emailField = form.querySelector('input[type="email"]');
+    if (emailField && emailField.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailField.value.trim())) {
+      if (feedback) {
+        feedback.textContent = "Inserisci un indirizzo email valido.";
+        feedback.hidden = false;
+      }
+      emailField.focus();
+      return;
+    }
+
+    const privacy = form.querySelector('[name="privacy"]');
+    if (privacy && privacy.checked !== true) {
+      if (feedback) {
+        feedback.textContent = "Per continuare devi accettare l'informativa privacy.";
+        feedback.hidden = false;
+      }
+      privacy.focus();
+      return;
+    }
+
     if (feedback) {
+      if (!feedback.textContent.trim()) {
+        feedback.textContent = "Richiesta preparata correttamente.";
+      }
       feedback.hidden = false;
     }
   });
@@ -1022,7 +1062,7 @@ async function handleEstimateSubmit(event) {
       whatsappFallback.hidden = true;
       whatsappFallback.removeAttribute("href");
     }
-    setSubmissionFeedback("Completa i dati indicati per inviare la richiesta. La stima resta indicativa e non vincolante.");
+    setSubmissionFeedback(!privacyAccepted ? "Per continuare devi accettare l'informativa privacy." : "Completa i dati indicati per inviare la richiesta. La stima resta indicativa e non vincolante.");
     return;
   }
 

@@ -67,7 +67,7 @@
           <p class="brand-payoff">Operativi al Vomero e in tutta Napoli. Preventivi rapidi, sopralluoghi su appuntamento e interventi curati nei dettagli.</p>
         </div>
 
-        <form class="quote-form" id="quoteForm" action="prenota.html">
+        <form class="quote-form" id="quoteForm" action="prenota.html" novalidate>
           <div class="quote-heading">
             <h2>Richiedi il tuo preventivo</h2>
             <p>rispondiamo entro 24 ore</p>
@@ -88,6 +88,8 @@
             <label><input type="checkbox" name="customerType" value="privato" /><span>Sono un privato</span></label>
           </div>
           <span class="field-error" id="homeCustomerTypeError" aria-live="polite"></span>
+          <label class="privacy-check"><input id="homePrivacyConsent" name="privacy" type="checkbox" value="accettata" required /> <span>Ho letto e accetto l'<a href="privacy.html">informativa privacy</a>.</span></label>
+          <span class="field-error" id="homePrivacyError" aria-live="polite"></span>
           <p class="form-feedback quote-feedback" id="quoteFeedback" aria-live="polite" hidden></p>
           <button type="submit">Inizia la richiesta</button>
         </form>
@@ -246,7 +248,7 @@
     </div>
     <div class="footer-col">
       <h2>Dati aziendali</h2>
-      <p><strong>Ragione sociale:</strong> C.M. Pulizie S.r.l. [VERIFICARE RAGIONE SOCIALE COMPLETA]<br />P.IVA: 09749501210<br />Codice Fiscale: [INSERIRE CODICE FISCALE]<br />Sede legale: [INSERIRE SEDE LEGALE COMPLETA]<br />Sede operativa: <a href="https://maps.app.goo.gl/mdHLhVkuGk9x565KA?g_st=ic" aria-label="Apri Via G. Capaldo 7 su Google Maps" target="_blank" rel="noopener noreferrer">Via G. Capaldo 7, Napoli</a><br />REA: [INSERIRE NUMERO REA]<br />Registro Imprese: [INSERIRE REGISTRO IMPRESE]<br />Capitale sociale: [INSERIRE CAPITALE SOCIALE]</p>
+      <p><strong>Ragione sociale:</strong> C.M. SRLS<br />P.IVA: 09749501210<br />Codice Fiscale: 09749501210<br />Sede legale: Via Po' 8, 80026 Casoria (NA)<br />Sede operativa: <a href="https://maps.app.goo.gl/mdHLhVkuGk9x565KA?g_st=ic" aria-label="Apri Via G. Capaldo 7 su Google Maps" target="_blank" rel="noopener noreferrer">Via G. Capaldo 7, Napoli</a><br />REA: NA - 1054633<br />Registro Imprese: Napoli<br />Capitale sociale: &euro; 1.800,00</p>
     </div>
     <div class="footer-col">
       <h2>Link rapidi</h2>
@@ -258,7 +260,7 @@
     <div class="footer-col">
       <h2>Contatti</h2>
       <a class="footer-cta" href="https://wa.me/393383861399" aria-label="Contatta C.M. Pulizie su WhatsApp al 3383861399" target="_blank" rel="noopener noreferrer">Scrivici su WhatsApp</a>
-      <p class="footer-phone-list">Telefono: <a href="tel:+393383861399" aria-label="Chiama Roberto al 338 386 1399">338 386 1399</a><br />Telefono secondario: <a href="tel:+393276623190" aria-label="Chiama Ciro al 327 662 3190">327 662 3190</a><br />WhatsApp: <a href="https://wa.me/393383861399" target="_blank" rel="noopener noreferrer">338 386 1399</a><br />Email: <a href="mailto:info@c.m.puliziesrl.it" aria-label="Invia email a C.M. Pulizie">info@c.m.puliziesrl.it</a><br />PEC: [INSERIRE PEC]</p>
+      <p class="footer-phone-list">Telefono Roberto: <a href="tel:+393383861399" aria-label="Chiama Roberto al 338 386 1399">338 386 1399</a><br />Telefono Ciro: <a href="tel:+393276623190" aria-label="Chiama Ciro al 327 662 3190">327 662 3190</a><br />WhatsApp: <a href="https://wa.me/393383861399" target="_blank" rel="noopener noreferrer">338 386 1399</a><br />Email: <a href="mailto:info@c.m.puliziesrl.it" aria-label="Invia email a C.M. Pulizie">info@c.m.puliziesrl.it</a></p>
     </div>
     <div class="footer-col footer-hours-col">
       <h2>Orari</h2>
