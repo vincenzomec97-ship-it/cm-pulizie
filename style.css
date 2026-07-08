@@ -4267,6 +4267,12 @@ textarea:focus-visible {
   justify-content: flex-end;
 }
 
+.site-header .contact-item,
+.site-header .contact-item .top-icon {
+  color: var(--blue);
+  stroke: currentColor;
+}
+
 @media (max-width: 680px) {
   .top-bar {
     grid-template-columns: 1fr;
