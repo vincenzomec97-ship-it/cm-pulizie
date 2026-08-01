@@ -11,6 +11,9 @@ desktop.ini
 node_modules/
 dist/
 build/
+.env
+.env.*
+!.env.example
 
 # Log e file temporanei
 *.log

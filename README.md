@@ -1,6 +1,9 @@
 # C.M. Pulizie - Sito aziendale responsive
 
-[Visualizza la demo online](https://vincenzomec97-ship-it.github.io/cm-pulizie/)
+[Demo online](https://vincenzomec97-ship-it.github.io/cm-pulizie/) ·
+[Case study](https://vincenzomec97-ship-it.github.io/VinMec-portfolio/projects/cm-pulizie/) ·
+[Portfolio](https://vincenzomec97-ship-it.github.io/VinMec-portfolio/) ·
+[Repository](https://github.com/vincenzomec97-ship-it/cm-pulizie)
 
 Progetto frontend realizzato per presentare i servizi di un'impresa di pulizie e semplificare la richiesta di preventivo. Il sito include un preventivo dinamico diverso per ogni servizio, un assistente virtuale con risposte controllate, integrazione WhatsApp, animazioni leggere e un'interfaccia completamente responsive.
 
@@ -93,6 +96,12 @@ Il chatbot:
 - JavaScript.
 - JSON.
 - GitHub Pages.
+
+## Ruolo
+
+UI/UX design, sviluppo frontend, organizzazione dei contenuti, SEO tecnica di
+base, configurazione della modalità portfolio e pubblicazione a cura di Vincenzo
+Meccariello.
 
 ## Responsive design
 
@@ -264,10 +273,16 @@ Il file `apps-script/Code.gs` resta come traccia tecnica per una futura integraz
 
 Non inserire password, API key o token nel repository pubblico.
 
+## Limitazioni
+
+- preventivi, candidature e richieste non vengono trasmessi o salvati;
+- area admin e generazione PDF sono dimostrative;
+- il chatbot usa risposte configurate e non un modello AI;
+- le integrazioni esterne richiedono configurazione, privacy e controlli server-side.
+
 ## Autore
 
-- Nome: Vincenzo Meccariello
-- Portfolio: INSERIRE_LINK_PORTFOLIO
-- GitHub: INSERIRE_LINK_GITHUB
-- LinkedIn: INSERIRE_LINK_LINKEDIN
-- Email professionale: INSERIRE_EMAIL_PROFESSIONALE
+- **Vincenzo Meccariello** — Junior Frontend Developer & UI/UX Designer
+- [Portfolio](https://vincenzomec97-ship-it.github.io/VinMec-portfolio/)
+- [GitHub](https://github.com/vincenzomec97-ship-it)
+- [LinkedIn](https://www.linkedin.com/in/vincenzo-meccariello-4140b9386/)
